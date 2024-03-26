@@ -7,12 +7,13 @@ Nature Explorer is a web application designed to help travelers explore the trai
 
 * **Frontend**: React.js, JavaScript, HTML5, CSS3
 * **Backend**: Node.js, Express.js
-* **Database**: MongoDB (or specify your database technology)
-* **Mapping**: Mapbox API (or specify your mapping technology)
+* **Database**: Django
+* **Mapping**: Google maps - open topic
 * **Version** Control: Git, GitHub
-* **Deployment**: Docker, Kubernetes (or specify your deployment technology)
+* **Deployment**: Open topic
 
-## Color Reference
+
+## Color Reference - optional
 
 | Color             | Hex                                                                |
 | ----------------- | ------------------------------------------------------------------ |
