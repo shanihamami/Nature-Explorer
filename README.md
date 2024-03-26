@@ -28,6 +28,3 @@ Nature Explorer is a web application designed to help travelers explore the trai
 | ![#1E6091](https://via.placeholder.com/15/1E6091/000000?text=+) |`#1E6091`
 | ![#184E77](https://via.placeholder.com/15/184E77/000000?text=+) |`#184E77`
 
-## License
-
-Nature Explorer is licensed under the MIT License. See the [LICENSE](https://choosealicense.com/licenses/mit/) file for more information. 
