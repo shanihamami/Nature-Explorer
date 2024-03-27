@@ -23,13 +23,12 @@ Nature Explorer is a web application designed to help travelers explore the trai
 * **Contact**: Allows users to get in touch with the team for inquiries, feedback, and support.
 
 <p align="middle">
-  <img src="screenshots/homepage.png" alt="Homepage" style="width: 200px; height: 400px;">
-  <img src="screenshots/search.png" alt="Search" style="width: 200px; height: 400px;">
-  <img src="screenshots/map.png" alt="Map" style="width: 200px; height: 400px;">
-  <img src="screenshots/contact.png" alt="Contact" style="width: 200px; height: 400px;">
+  <img src="screenshots/contact.png" alt="Contact" style="width: 180px; height: 400px;">
+  <img src="screenshots/registration.png" alt="Map" style="width: 180px; height: 400px;">
+  <img src="screenshots/search.png" alt="Search" style="width: 180px; height: 400px;">
+  <img src="screenshots/map.png" alt="Map" style="width: 180px; height: 405px;">
+  <img src="screenshots/homepage.png" alt="Homepage" style="width: 180px; height: 400px;">
 </p>
-
-
 
 ## Color Reference - optional
 
