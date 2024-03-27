@@ -26,7 +26,7 @@ Nature Explorer is a web application designed to help travelers explore the trai
   <img src="screenshots/contact.png" alt="Contact" style="width: 180px; height: 400px;">
   <img src="screenshots/registration.png" alt="Map" style="width: 180px; height: 400px;">
   <img src="screenshots/search.png" alt="Search" style="width: 180px; height: 400px;">
-  <img src="screenshots/map.png" alt="Map" style="width: 180px; height: 400px;">
+  <img src="screenshots/map.png" alt="Map" style="width: 180px; height: 415px;">
   <img src="screenshots/homepage.png" alt="Homepage" style="width: 180px; height: 400px;">
 </p>
 
