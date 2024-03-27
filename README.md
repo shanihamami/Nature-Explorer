@@ -22,12 +22,11 @@ Nature Explorer is a web application designed to help travelers explore the trai
 * **About**: Offers information about "בשבילי חיפה", its mission, and the team behind the project.
 * **Contact**: Allows users to get in touch with the team for inquiries, feedback, and support.
 
-## Screenshots
 <p align="middle">
-  <img src="screenshots/homepage.png" alt="Homepage" style="width: 200px;">
-  <img src="screenshots/search.png" alt="Search" style="width: 200px;">
-  <img src="screenshots/map.png" alt="Map" style="width: 200px;">
-  <img src="screenshots/contact.png" alt="Contact" style="width: 200px;">
+  <img src="screenshots/homepage.png" alt="Homepage" style="width: 200px; height: 400px;">
+  <img src="screenshots/search.png" alt="Search" style="width: 200px; height: 400px;">
+  <img src="screenshots/map.png" alt="Map" style="width: 200px; height: 400px;">
+  <img src="screenshots/contact.png" alt="Contact" style="width: 200px; height: 400px;">
 </p>
 
 
