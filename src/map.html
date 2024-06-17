@@ -5,13 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Map - Go2Haifa</title>
+    
+    <!-- Link to your styles.css -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
     <style>
         #map {
-            height: 400px;
+            height: 600px;
             width: 100%;
         }
     </style>
-    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -31,40 +37,75 @@
     </header>
 
     <main>
-        <section id="map"></section>
-        <div class="logo-container">
-            <a href="HomePage.html"><img src="images/logo.jpg" alt="לוגו"></a>
-        </div>
+        <h1>מפה</h1>
+        <div id="map"></div>
+    
+        <!-- Leaflet JavaScript -->
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script>
+            // Initialize the map and set its view to a specific location
+            var map = L.map('map').setView([32.794044, 34.989571], 13);
+
+            // Add the OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Function to add markers to fixed points
+            function addMarkers() {
+                var markers = [
+                    { lat: 32.794044, lng: 34.989571, popupText: 'Haifa, Israel' },
+                    { lat: 32.791899, lng: 34.986503, popupText: 'Bahai Gardens' },
+                    { lat: 32.803144, lng: 34.986806, popupText: 'Carmel Beach' }
+                ];
+
+                markers.forEach(function(markerInfo) {
+                    var marker = L.marker([markerInfo.lat, markerInfo.lng]).addTo(map);
+                    marker.bindPopup(markerInfo.popupText);
+                });
+            }
+
+            // Function to add a route (polyline)
+            function addRoute() {
+                var routeCoordinates = [
+                    [32.794044, 34.989571],
+                    [32.791899, 34.986503],
+                    [32.803144, 34.986806]
+                ];
+
+                var polyline = L.polyline(routeCoordinates, { color: 'red' }).addTo(map);
+            }
+
+            // Function to add current location marker
+            function addCurrentLocationMarker(lat, lng) {
+                var currentLocationMarker = L.marker([lat, lng]).addTo(map)
+                    .bindPopup('You are here')
+                    .openPopup();
+                map.setView([lat, lng], 13); // Center the map on the current location
+            }
+
+            // Check if Geolocation is supported
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var lat = position.coords.latitude;
+                    var lng = position.coords.longitude;
+                    addCurrentLocationMarker(lat, lng);
+                }, function (error) {
+                    console.error('Error getting current location:', error);
+                    addMarkers(); // Add fixed markers as fallback
+                    addRoute(); // Add route as fallback
+                });
+            } else {
+                console.error('Geolocation is not supported by this browser.');
+                addMarkers(); // Add fixed markers as fallback
+                addRoute(); // Add route as fallback
+            }
+        </script>
+    
     </main>
 
     <footer>
     </footer>
-
-    <!-- Load the Google Maps JavaScript API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
-
-    <!-- JavaScript code for initializing the map -->
-    <script>
-        let map;
-
-        function initMap() {
-            // Coordinates for Haifa, Israel
-            const haifa = { lat: 32.794044, lng: 34.989571 };
-
-            // Create a new map centered at Haifa
-            map = new google.maps.Map(document.getElementById("map"), {
-                center: haifa,
-                zoom: 12, // Adjust the zoom level as needed
-            });
-
-            // Optionally, you can add markers or other features to the map
-            // const marker = new google.maps.Marker({
-            //     position: haifa,
-            //     map: map,
-            //     title: "Haifa, Israel"
-            // });
-        }
-    </script>
 
 </body>
 
