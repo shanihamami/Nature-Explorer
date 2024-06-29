@@ -29,7 +29,7 @@
             <h1>חיפוש מסלולים - בדיקה האם עודכן 11:37</h1>
             <form method="POST" action="/search">
                 <label for="area">איזור טיול:</label>
-                <select id="area">
+                <select id="area" name="area">
                     <option value="שבילי יער רמת אלון">שבילי יער רמת אלון</option>
                     <option value="ואדי לטם">ואדי לטם</option>
                     <option value="גבעת העיזים">גבעת העיזים</option>
@@ -37,15 +37,15 @@
                     <option value="נחל סעדיה">נחל סעדיה</option>
                 </select><br><br>
 
-                <label for="length">אורך מסלול:</label>
-                <select id="length">
+                <label for="duration">אורך מסלול:</label>
+                <select id="duration" name="duration">
                     <option value="חצי שעה-שעה">חצי שעה-שעה</option>
                     <option value="שעה-שעתיים">שעה-שעתיים</option>
                     <option value="שעתיים+">שעתיים+</option>
                 </select><br><br>
 
                 <label for="season">עונה מתאימה:</label>
-                <select id="season">
+                <select id="season" name="season">
                     <option value="קיץ">קיץ</option>
                     <option value="חורף">חורף</option>
                     <option value="סתיו">סתיו</option>
