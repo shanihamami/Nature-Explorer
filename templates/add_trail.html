@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}הוסף מסלול{% endblock %}
+
+{% block content %}
+<main>
+    <section id="add-trail" class="rtl-form">
+        <h1>הוסף מסלול חדש</h1>
+        <form method="POST" action="{{ url_for('add_trail') }}">
+            <div class="form-group">
+                <label for="main_location">מיקום ראשי:</label>
+                <input type="text" id="main_location" name="main_location" required>
+            </div>
+            <div class="form-group">
+                <label for="trail_name">שם המסלול:</label>
+                <input type="text" id="trail_name" name="trail_name" required>
+            </div>
+            <div class="form-group">
+                <label for="short_description">תיאור קצר:</label>
+                <textarea id="short_description" name="short_description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="start_point">נקודת התחלה:</label>
+                <input type="text" id="start_point" name="start_point" required>
+            </div>
+            <div class="form-group">
+                <label for="end_point">נקודת סיום:</label>
+                <input type="text" id="end_point" name="end_point" required>
+            </div>
+            <div class="form-group">
+                <label for="lengthKM">אורך (ק"מ):</label>
+                <input type="number" id="lengthKM" name="lengthKM" step="0.1" required>
+            </div>
+            <div class="form-group">
+                <label for="difficulty">קושי:</label>
+                <input type="text" id="difficulty" name="difficulty" required>
+            </div>
+            <div class="form-group">
+                <label for="season">עונה:</label>
+                <input type="text" id="season" name="season" required>
+            </div>
+            <div class="form-group">
+                <label for="point_of_interest">נקודות עניין:</label>
+                <textarea id="point_of_interest" name="point_of_interest" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="interactive_activity">פעילות אינטראקטיבית:</label>
+                <textarea id="interactive_activity" name="interactive_activity" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="duration">משך המסלול:</label>
+                <input type="text" id="duration" name="duration" required>
+            </div>
+            <div class="form-group">
+                <label for="possibility_of_entering_water">אפשרות כניסה למים:</label>
+                <input type="checkbox" id="possibility_of_entering_water" name="possibility_of_entering_water">
+            </div>
+            <div class="form-group">
+                <label for="suitable_for_families">מתאים למשפחות:</label>
+                <input type="checkbox" id="suitable_for_families" name="suitable_for_families">
+            </div>
+            <div class="form-group">
+                <label for="suitable_for_bicycles">מתאים לאופניים:</label>
+                <input type="checkbox" id="suitable_for_bicycles" name="suitable_for_bicycles">
+            </div>
+            <div class="form-group">
+                <label for="circular">מעגלי:</label>
+                <input type="checkbox" id="circular" name="circular">
+            </div>
+            <div class="form-group">
+                <label for="suitable_for_disabled">מתאים לנכים:</label>
+                <input type="checkbox" id="suitable_for_disabled" name="suitable_for_disabled">
+            </div>
+            <button type="submit">הוסף מסלול</button>
+        </form>
+    </section>
+</main>
+
+<style>
+    .rtl-form {
+        direction: rtl;
+        text-align: right;
+    }
+
+    #add-trail {
+        padding: 20px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        width: 150px; /* Adjust width as needed */
+        text-align: right;
+    }
+
+    .form-group input, .form-group textarea {
+        padding: 10px;
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    button {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        width: fit-content;
+        margin-top: 10px;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+</style>
+{% endblock %}

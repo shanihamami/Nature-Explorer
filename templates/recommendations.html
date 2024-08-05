@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}המלצות{% endblock %}
+
+{% block content %}
+<main>
+    <style>
+        .recommendation {
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            direction: rtl; /* Right-to-left text direction */
+            text-align: justify; /* Justify text alignment */
+        }
+
+        .recommendation-header {
+            border-bottom: 2px solid #337ab7; /* Different color for header */
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            color: #337ab7; /* Text color for header */
+            text-align: right; /* Align header text to the right */
+            direction: ltr; /* Left-to-right direction for header text */
+            margin-right: -15px; /* Adjust margin to align with right side */
+            padding-right: 15px; /* Adjust padding for spacing */
+        }
+
+        .recommendation-content p {
+            line-height: 1.6;
+        }
+
+        .recommendation-content a {
+            color: #337ab7;
+            text-decoration: none;
+        }
+
+        .recommendation-content a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    <section class="recommendations">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="recommendation">
+                        <div class="recommendation-header">
+                            <h2>שביל ישראל - מקטעי הכרמל</h2>
+                        </div>
+                        <div class="recommendation-content">
+                            <p>
+                                שביל ישראל - מקטעי הכרמל שלנו! מתקרבים...
+                                בשבוע הקרוב יגיעו הצועדים על שביל ישראל, למקטעים הכרמל. המסע שהתחיל לפני 29 ימים בהרי אילת, עם קבוצת צועדים בני כל הגילאים יסתיים באמצע חודש אפריל.
+                                מקטעים 13, 14 של שביל ישראל (מתוך 44 מקטעים מצפון ועד דרום) עוברים בהר הכרמל והם מהיפים שבמקטעים. בתאריכים 27, 28 למרץ יעברו הצועדים במקטעים אלו.
+                                ניתן להצטרף למקטע יומי, או להשאר ללינה עם שאר המטיילים במסע.
+                                מקטע הכרמל יום רביעי 27.3.24 : חניון נחל אורן - חניון רקית -הר שוקף - דלית אל כרמל . בסופו מפגש עם תת אלוף במיל' אמאל אסעד יוזם פרויקט "שביל הבנים הדרוזים".
+                                מקטע הכרמל יום חמישי 28.3.24 : מוחרקה - דרך נוף כרמל - שביל השעורה - יגור - כפר חסידים.
+                                על מסלולי הכרמל החניונים שבשטח פארק הכרמל כמו גם על התצפיות לאורך דרך נוף כרמל, תוכלו לקרוא עוד בפוסטים שהעלנו בקבוצה זו בעבר במס
+                                גרת "אתגר ה-21" וכן הראיון שערכתי עם אל"מ אמאל אסעד.
+                                גם אנחנו נהיה שם !
+                                <br>
+                                מצורף קישור ללוח הזמנים של המסע : <a href="https://avi-beshvil-israel.org.il/IdkunYomi.php?yom=28-03-2024">לוח זמנים</a>
+                                <br>
+                                מצורף קישור לכתבתי על מקטעי הכרמל של שביל ישראל :
+                                <a href="https://haipo.co.il/item/409214">מקטעי הכרמל</a>
+                            </p>
+                        </div>
+                    </div>
+                    <hr> <!-- Horizontal line -->
+                    <div class="recommendation">
+                        <div class="recommendation-header">
+                            <h2>מיזם מיכל ידגר</h2>
+                        </div>
+                        <div class="recommendation-content">
+                            <p>
+                                מיזם מדהים של מיכל ידגר, חברת הקבוצה, תופס תאוצה ואתם יכולים להיות חלק ממנו !
+                                מיכל היא מורת דרך בנשמה וממשיכה לטייל בדרכה החדשה בעוצמה ובמרץ, מבלי לתת למחלת ה ASL שתקפה אותה לפני חמש שנים לעצור אותה.
+                                למיכל אתר לטיולים ללא מגבלות, ובימים אלו היא השיקה מיזם חדש שמשכיר כסאות גלגלים לטיולי שטח עבור חיילים שנפצעו במלחמה ובכלל.
+                                קחו נשימה, אתם נכנסים למרתון של מיכל....
+                                <br>
+                                פרטים נוספים : <a href="https://www.facebook.com/share/p/Er3wGTy4MiLGF4o2/?mibextid=Nif5oz">לפרטים</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

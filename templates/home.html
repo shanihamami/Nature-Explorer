@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}עמוד הבית{% endblock %}
+
+{% block content %}
+<style>
+    .banner-container {
+        margin-top: 20px; /* Adjust this value as needed */
+        position: relative; /* Ensures proper positioning */
+        width: 100%; /* Full width of its container */
+        height: 300px; /* Adjust height as needed */
+        overflow: hidden; /* Ensures image doesn't overflow */
+    }
+
+    .banner-image {
+        width: 100%; /* Full width within its container */
+        height: 100%; /* Full height within its container */
+        object-fit: cover; /* Ensures the image covers the container */
+    }
+</style>
+
+<main>
+    <h1 class="rtl-text">ברוכים הבאים</h1>
+    <section class="banner-container">
+        <!-- Your banner section with updated styling -->
+        <img src="{{ url_for('static', filename='images/banner1.jpg') }}" alt="Banner 1" class="banner-image">
+        <button class="prev" onclick="prevSlide()">&#10094;</button>
+        <button class="next" onclick="nextSlide()">&#10095;</button>
+    </section>
+
+
+    <!-- Updates Section -->
+    <div class="updates">
+        <h2 class="rtl-text">עדכונים</h2>
+        <div class="update-box">
+            <p class="rtl-text">סיור לנחל לוטם יוצא ב- 17/04/2024, לפרטים ולרישום היכנסו לעמוד "רישום לסיורים"</p>
+        </div>
+        <div class="update-box">
+            <p class="rtl-text">מוזמנים להאזין ל"שעה בשבוע" עם מובילת "בשבילי חיפה" ענבל חן ברגב. זמין בספוטיפיי -
+                <a href="https://open.spotify.com/episode/3Wl8QX29XqgUzXiwhyQzYM" target="_blank">link</a>
+                או ביוטיוב -
+                <a href="https://youtu.be/GAnCOt03LJU" target="_blank">link</a>
+            </p>
+        </div>
+    </div>
+</main>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}

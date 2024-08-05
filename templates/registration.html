@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}רישום לסיורים{% endblock %}
+
+{% block content %}
+<main class="rtl-text">
+    <section id="registration-form">
+        <h1>רישום לסיורים</h1>
+        <form method="POST" action="{{ url_for('register') }}">
+            <div class="form-group">
+                <label for="full_name">שם מלא:</label>
+                <input type="text" id="full_name" name="full_name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="id_card">ת.ז:</label>
+                <input type="text" id="id_card" name="id_card" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="phone_number">מספר טלפון:</label>
+                <input type="text" id="phone_number" name="phone_number" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="number_of_participants">מספר אנשים:</label>
+                <input type="text" id="number_of_participants" name="number_of_participants" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="tour">בחירת סיור:</label>
+                <select name="tour" id="tour" class="form-control" required>
+                    <option value="שבילי יער רמת אלון">שבילי יער רמת אלון</option>
+                    <option value="ואדי לטם">ואדי לטם</option>
+                    <option value="גבעת העיזים">גבעת העיזים</option>
+                    <option value="ואדי עובדיה">ואדי עובדיה</option>
+                    <option value="נחל סעדיה">נחל סעדיה</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="comments">הערות:</label>
+                <textarea id="comments" name="comments" rows="4" cols="50" class="form-control"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">רישום</button>
+        </form>
+    </section>
+</main>
+{% endblock %}

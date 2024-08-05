@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}צפייה בהודעות{% endblock %}
+
+{% block content %}
+<main>
+    <section id="view-messages">
+        <h1>צפייה בהודעות</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>שם מלא</th>
+                    <th>דוא"ל</th>
+                    <th>טלפון</th>
+                    <th>הודעה</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for message in messages %}
+                <tr>
+                    <td>{{ message[0] }}</td>  <!-- ID -->
+                    <td>{{ message[1] }}</td>  <!-- Fullname -->
+                    <td>{{ message[2] }}</td>  <!-- Email -->
+                    <td>{{ message[3] }}</td>  <!-- Phone -->
+                    <td>{{ message[4] }}</td>  <!-- Message -->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<style>
+    #view-messages {
+        direction: rtl;
+        text-align: right;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+</style>
+{% endblock %}

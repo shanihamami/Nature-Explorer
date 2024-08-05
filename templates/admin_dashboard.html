@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}לוח בקרה{% endblock %}
+
+{% block content %}
+<main>
+    <section id="admin-dashboard" class="rtl-text">
+        <h1>לוח בקרה</h1>
+        <div class="admin-sections">
+            <div class="admin-section">
+                <h2>ניהול שבילים</h2>
+                <p>ראה וערוך את כל השבילים</p>
+                <a href="{{ url_for('manage_trails') }}" class="btn btn-primary">עבור לניהול שבילים</a>
+                <div class="preview">
+                    <h5>תצוגה מקדימה של שבילים</h5>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>מיקום ראשי</th>
+                                <th>שם שביל</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for trail in trails %}
+                            <tr>
+                                <td>{{ trail[0] }}</td>
+                                <td>{{ trail[1] }}</td>
+                                <td>{{ trail[2] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="admin-section">
+                <h2>צפייה ברישומים</h2>
+                <p>צפה ברשימת האנשים שנרשמו לסיורים.</p>
+                <a href="{{ url_for('view_registrations') }}" class="btn btn-primary">עבור לצפייה ברישומים</a>
+                <div class="preview">
+                    <h5>תצוגה מקדימה של רישומים</h5>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>שם מלא</th>
+                                <th>דוא"ל</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for registration in registrations %}
+                            <tr>
+                                <td>{{ registration[0] }}</td>
+                                <td>{{ registration[1] }}</td>
+                                <td>{{ registration[2] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="admin-section">
+                <h2>צפייה בהודעות</h2>
+                <p>צפה בהודעות שהתקבלו מהמשתמשים דרך טופס הקשר.</p>
+                <a href="{{ url_for('view_messages') }}" class="btn btn-primary">עבור לצפייה בהודעות</a>
+                <div class="preview">
+                    <h5>תצוגה מקדימה של הודעות</h5>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>שם מלא</th>
+                                <th>הודעה</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for message in messages %}
+                            <tr>
+                                <td>{{ message[0] }}</td>
+                                <td>{{ message[1] }}</td>
+                                <td>{{ message[2] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<style>
+#admin-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    direction: rtl; /* Right-to-left text direction */
+}
+
+.admin-sections {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.admin-section {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    flex: 1;
+    min-width: 300px; /* Ensure it doesn't get too narrow */
+}
+
+.preview {
+    margin-top: 1rem;
+}
+
+.preview table {
+    width: 100%;
+    border-collapse: collapse;
+    direction: rtl; /* Right-to-left table direction */
+}
+
+.preview table, .preview th, .preview td {
+    border: 1px solid #ddd;
+}
+
+.preview th, .preview td {
+    padding: 8px;
+    text-align: right; /* Right-align text in table */
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #007bff;
+}
+</style>
+{% endblock %}

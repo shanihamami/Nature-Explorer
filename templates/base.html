@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      crossorigin="anonymous"
+    />
+    <title>{% block title %}Home{% endblock %}</title>
+    <style>
+      /* Custom styles for RTL text */
+      .rtl-text {
+        direction: rtl;
+        text-align: right;
+      }
+
+      /* Logo in navbar */
+      .navbar-brand img {
+        max-height: 40px; /* Adjust logo size */
+        margin-right: 10px; /* Space between logo and text */
+      }
+
+      /* Navbar colors */
+      .navbar {
+        background-color: #8BCC5C; /* Change to your desired green color */
+      }
+
+      .navbar-nav .nav-item .nav-link {
+        color: #fff; /* White text color */
+      }
+
+      .navbar-nav .nav-item .nav-link:hover {
+        background-color: #1a759f; /* Darker color on hover */
+      }
+
+      /* Footer styles */
+      footer {
+        background-color: #1e6091; /* Footer background color */
+        color: #fff; /* Text color */
+        padding: 10px 0; /* Padding top and bottom */
+        text-align: center; /* Center align text */
+        position: relative;
+        width: 100%;
+        margin-top: auto; /* Ensure it pushes to the bottom */
+      }
+
+      footer a {
+        color: #fff; /* Link color */
+        text-decoration: none; /* Remove underline */
+      }
+
+      footer a:hover {
+        text-decoration: underline; /* Underline on hover */
+      }
+
+      /* Ensure the body takes up the full height of the viewport */
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+
+      /* Flexbox container to push footer to the bottom */
+      .d-flex {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      /* Adjust form width */
+      .search-form {
+        max-width: 400px; /* Adjust as needed */
+        margin: auto; /* Center the form horizontally */
+      }
+
+      /* Ensure checkbox labels are aligned properly */
+      .form-check-label {
+        margin-right: 10px; /* Adjust spacing between checkbox and label */
+      }
+    </style>
+</head>
+<body class="d-flex flex-column">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <a class="navbar-brand" href="/">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Nature Explorer Logo">
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbar"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbar">
+        <div class="navbar-nav ml-auto"> <!-- Adjusted for right alignment -->
+          <a class="nav-item nav-link" id="contact" href="/contact">צור קשר</a>
+          <a class="nav-item nav-link" id="about" href="/about">אודות</a>
+          <a class="nav-item nav-link" id="recommendations" href="/recommendations">המלצות</a>
+          <a class="nav-item nav-link" id="registration" href="/registration">רישום לסיורים</a>
+          <a class="nav-item nav-link" id="maps" href="/maps">מפה</a>
+          <a class="nav-item nav-link" id="search" href="/search">חיפוש מסלולים</a>
+          <a class="nav-item nav-link" id="home" href="/">עמוד הבית</a>
+        </div>
+      </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          {% if category == 'error' %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% else %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="container flex-grow-1">
+      {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+      <p>אתם מוזמנים להצטרף לקבוצת הפייסבוק "בשבילי חיפה" כדי להישאר מועדכנים</p>
+      <a href="https://www.facebook.com/groups/2787205004828441" target="_blank">קישור לקבוצה בפייסבוק</a>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>

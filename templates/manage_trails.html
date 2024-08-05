@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}ניהול מסלולים{% endblock %}
+
+{% block content %}
+<main>
+    <section id="manage-trails" class="rtl-content">
+        <h1>ניהול מסלולים</h1>
+        <a href="{{ url_for('add_trail') }}" class="add-trail-btn">הוסף מסלול חדש</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>מיקום ראשי</th>
+                    <th>שם המסלול</th>
+                    <th>אורך (ק"מ)</th>
+                    <th>עונה</th>
+                    <th>פעולות</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trail in trails %}
+                <tr>
+                    <td>{{ trail.id }}</td>
+                    <td>{{ trail.main_location }}</td>
+                    <td>{{ trail.trail_name }}</td>
+                    <td>{{ trail.lengthKM }}</td>
+                    <td>{{ trail.season }}</td>
+                    <td>
+                        <a href="{{ url_for('edit_trail', trail_id=trail.id) }}">ערוך</a> |
+                        <a href="{{ url_for('delete_trail', trail_id=trail.id) }}" onclick="return confirm('האם אתה בטוח שברצונך למחוק מסלול זה?')">מחק</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="pagination">
+            {% if page > 1 %}
+            <a href="{{ url_for('manage_trails', page=page-1) }}">&laquo; עמוד קודם</a>
+            {% endif %}
+            {% if has_next %}
+            <a href="{{ url_for('manage_trails', page=page+1) }}">עמוד הבא &raquo;</a>
+            {% endif %}
+        </div>
+    </section>
+</main>
+
+<style>
+    .rtl-content {
+        direction: rtl;
+        text-align: right;
+    }
+
+    #manage-trails {
+        padding: 20px;
+    }
+
+    .add-trail-btn {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding: 10px 15px;
+        background-color: #34A0A4;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .add-trail-btn:hover {
+        background-color: #168AAD;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+
+    .pagination {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .pagination a {
+        margin: 0 5px;
+        padding: 5px 10px;
+        text-decoration: none;
+        color: #000;
+        border: 1px solid #000;
+    }
+
+    .pagination a:hover {
+        background-color: #ddd;
+    }
+</style>
+{% endblock %}

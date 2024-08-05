@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}תוצאות חיפוש{% endblock %}
+
+{% block content %}
+<main class="rtl-text">
+    <h1>תוצאות חיפוש</h1>
+
+    {% if results %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>מיקום ראשי</th>
+                <th>שם</th>
+                <td>תיאור קצר</td>
+                <td>נקודת התחלה</td>
+                <td>נקודת סיום</td>
+                <th>אורך</th>
+                <th>רמת קושי</th>
+                <th>עונה</th>
+                <th>מזג אוויר</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr>
+                <td>{{ result.main_location }}</td>
+                <td>{{ result.trail_name }}</td>
+                <td>{{ result.short_description }}</td>
+                <td>{{ result.start_point }}</td>
+                <td>{{ result.end_point }}</td>
+                <td>{{ result.lengthKM }}</td>
+                <td>{{ result.difficulty }}</td>
+                <td>{{ result.season }}</td>
+                <td id="weather-{{ loop.index0 }}" class="weather-cell">Loading...</td> <!-- Add an ID to the weather cell -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>לא נמצאו תוצאות.</p>
+    {% endif %}
+</main>
+
+<script>
+    const apiKey = '9142ce21742a02f12fd544a3a3e34cdd'; // Working OpenWeatherMap API key
+    const city = 'Haifa'; 
+    
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data && data.weather && data.weather.length > 0) {
+                const weatherDescription = data.weather[0].description;
+                const weatherTemp = data.main.temp;
+                const weatherIcon = data.weather[0].icon;
+                const weatherHTML = `
+                    <div style="display: flex; align-items: center;">
+                        <img src="http://openweathermap.org/img/wn/${weatherIcon}.png" alt="${weatherDescription}" title="${weatherDescription}" style="margin-right: 5px; width: 30px; height: 30px;">
+                        <p style="margin: 0;">${weatherTemp}°C</p>
+                    </div>
+                `;
+                document.querySelectorAll('[id^="weather-"]').forEach(element => {
+                    element.innerHTML = weatherHTML;
+                });
+            } else {
+                document.querySelectorAll('[id^="weather-"]').forEach(element => {
+                    element.innerHTML = 'No data available';
+                });
+            }
+        })
+        .catch(error => {
+            document.querySelectorAll('[id^="weather-"]').forEach(element => {
+                element.innerHTML = 'Error fetching weather data';
+            });
+            console.error('Error fetching weather data:', error);
+        });
+</script>
+{% endblock %}

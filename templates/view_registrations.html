@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}צפייה ברישומים{% endblock %}
+
+{% block content %}
+<main>
+    <section id="view-registrations">
+        <h1>צפייה בהרשמות</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>שם מלא</th>
+                    <th>דוא"ל</th>
+                    <th>טלפון</th>
+                    <th>מסלול ID</th>
+                    <th>תאריך הרשמה</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for registration in registrations %}
+                <tr>
+                    <td>{{ registration[0] }}</td>  <!-- ID -->
+                    <td>{{ registration[1] }}</td>  <!-- Fullname -->
+                    <td>{{ registration[2] }}</td>  <!-- Email -->
+                    <td>{{ registration[3] }}</td>  <!-- Phone -->
+                    <td>{{ registration[4] }}</td>  <!-- Trail ID -->
+                    <td>{{ registration[5] }}</td>  <!-- Registration Date -->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<style>
+    #view-registrations {
+        direction: rtl;
+        text-align: right;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+</style>
+{% endblock %}

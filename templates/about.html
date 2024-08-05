@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}אודות{% endblock %}
+
+{% block content %}
+<main>
+    <style>
+        .about-section {
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            direction: rtl; /* Right-to-left text direction */
+            text-align: justify; /* Justify text alignment */
+        }
+
+        .about-section h2 {
+            color: #337ab7; /* Text color for header */
+            border-bottom: 2px solid #337ab7; /* Different color for header */
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            text-align: right; /* Align header text to the right */
+            direction: ltr; /* Left-to-right direction for header text */
+            margin-right: -15px; /* Adjust margin to align with right side */
+            padding-right: 15px; /* Adjust padding for spacing */
+        }
+
+        .rtl-text {
+            text-align: right; /* Ensure text alignment is right-to-left */
+        }
+    </style>
+
+    <section class="about-section">
+        <h2 class="rtl-text">אודות</h2>
+        <p class="rtl-text">
+            לאוהבי העיר, מטיילים ותיקים וחדשים. קבוצה זו קמה כדי לשתף במסלולים עירוניים שמקיפים את השכונות הרבות על רכס הכרמל. שבילים ומסלולים הטובלים בטבע ירוק, בפריחות צבעוניות, מובילים למאגרי מים או לשרידים הסטוריים, מערות , קירות טיפוס וכל מה שבדרך.
+            לפעמים אנחנו מתקשים לזכור שהדברים הטובים באמת נמצאים ליד הבית...
+            זכרו לבקר אך גם לשמור על הטבע , בשבילנו ובשביל עתיד ירוק !
+        </p>
+    </section>
+
+</main>
+{% endblock %}

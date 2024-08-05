@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}חיפוש{% endblock %}
+
+{% block content %}
+<main>
+    <section id="search-form" class="rtl-text">
+        <h1>חיפוש מסלולים</h1>
+        <form method="POST" action="/search" class="search-form">
+            <div class="form-group">
+                <label for="area">איזור טיול:</label>
+                <select name="area" id="area" class="form-control">
+                    <option value="שבילי יער רמת אלון">שבילי יער רמת אלון</option>
+                    <option value="ואדי לטם">ואדי לטם</option>
+                    <option value="גבעת העיזים">גבעת העיזים</option>
+                    <option value="ואדי עובדיה">ואדי עובדיה</option>
+                    <option value="נחל סעדיה">נחל סעדיה</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="duration">אורך מסלול:</label>
+                <select name="duration" id="duration" class="form-control">
+                    <option value="חצי שעה-שעה">חצי שעה-שעה</option>
+                    <option value="שעה-שעתיים">שעה-שעתיים</option>
+                    <option value="שעתיים+">שעתיים+</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="season">עונה מתאימה:</label>
+                <select name="season" id="season" class="form-control">
+                    <option value="קיץ">קיץ</option>
+                    <option value="חורף">חורף</option>
+                    <option value="סתיו">סתיו</option>
+                    <option value="אביב">אביב</option>
+                </select>
+            </div>
+
+            <!--<div class="form-check">
+                <input type="checkbox" id="family" name="family" class="form-check-input">
+                <label for="family" class="form-check-label">מתאים למשפחות</label>
+            </div>
+
+            <div class="form-check">
+                <input type="checkbox" id="bicycles" name="bicycles" class="form-check-input">
+                <label for="bicycles" class="form-check-label">מתאים לאופניים</label>
+            </div>
+
+            <div class="form-check">
+                <input type="checkbox" id="water" name="water" class="form-check-input">
+                <label for="water" class="form-check-label">אפשרות כניסה למים</label>
+            </div>-->
+
+            <button type="submit" class="btn btn-primary">חיפוש</button>
+        </form>
+
+    </section>
+</main>
+{% endblock %}
