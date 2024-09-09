@@ -15,7 +15,7 @@
                 <td>תיאור קצר</td>
                 <td>נקודת התחלה</td>
                 <td>נקודת סיום</td>
-                <th>אורך</th>
+                <th>אורך (ק"מ)</th>
                 <th>רמת קושי</th>
                 <th>עונה</th>
                 <th>מזג אוויר</th>
@@ -44,9 +44,9 @@
 
 <script>
     const apiKey = '9142ce21742a02f12fd544a3a3e34cdd'; // Working OpenWeatherMap API key
-    const city = 'Haifa'; 
-    
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+    const city = 'Haifa';
+
+    fetch(https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok ' + response.statusText);
@@ -80,4 +80,4 @@
             console.error('Error fetching weather data:', error);
         });
 </script>
-{% endblock %}
+{% endblock %}

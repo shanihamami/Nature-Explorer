@@ -56,12 +56,14 @@
 
                     var marker = L.marker([lat, lng]).addTo(map);
                     marker.bindPopup(`
+                        <div style="text-align: right;">
                         <strong>${trail.trail_name}</strong><br>
                         ${trail.short_description}<br>
                         <strong>אזור בחיפה:</strong> ${trail.main_location}<br>
                         <strong>אורך (ק"מ):</strong> ${trail.lengthKM}<br>
                         <strong>רמת קושי:</strong> ${trail.difficulty}<br>
                         <strong>נקודות עניין:</strong> ${trail.point_of_interest}
+                        </div>
                     `);
                 });
             }
@@ -80,10 +82,4 @@
 </body>
 </html>
 
-{% endblock %}
-
-
-
-
-
-
+{% endblock %}
