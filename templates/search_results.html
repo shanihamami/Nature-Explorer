@@ -10,33 +10,52 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>מיקום ראשי</th>
                 <th>שם</th>
-                <td>תיאור קצר</td>
-                <td>נקודת התחלה</td>
-                <td>נקודת סיום</td>
+                <th>מיקום ראשי</th>
+                <th>תיאור קצר</th>
                 <th>אורך (ק"מ)</th>
                 <th>רמת קושי</th>
                 <th>עונה</th>
                 <th>מזג אוויר</th>
+                <th>סיורים עתידיים</th>
             </tr>
         </thead>
         <tbody>
             {% for result in results %}
             <tr>
-                <td>{{ result.main_location }}</td>
                 <td>{{ result.trail_name }}</td>
+                <td>{{ result.main_location }}</td>
                 <td>{{ result.short_description }}</td>
-                <td>{{ result.start_point }}</td>
-                <td>{{ result.end_point }}</td>
                 <td>{{ result.lengthKM }}</td>
                 <td>{{ result.difficulty }}</td>
                 <td>{{ result.season }}</td>
                 <td id="weather-{{ loop.index0 }}" class="weather-cell">Loading...</td> <!-- Add an ID to the weather cell -->
+                <td>
+                    {% set future_tours_for_trail = future_tours.get(result.trail_name, []) %}
+                    {% if future_tours_for_trail %}
+                        {% for tour in future_tours_for_trail %}
+                            <a href="{{ url_for('register', tour_title=tour.title) }}">{{ tour.date }}</a><br>
+                        {% endfor %}
+                    {% else %}
+                      אין סיורים עתידיים
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    <div class="pagination-container">
+        <div class="pagination">
+            {% if has_prev %}
+            <a href="{{ url_for('search', page=page-1, areas=areas, durations=durations, seasons=seasons, difficulties=difficulties, family='family' if family else None, water='water' if water else None, bicycles='bicycles' if bicycles else None, disabled='disabled' if disabled else None) }}" class="pagination-link">&laquo; עמוד קודם</a>
+            {% endif %}
+
+            {% if has_next %}
+            <a href="{{ url_for('search', page=page+1, areas=areas, durations=durations, seasons=seasons, difficulties=difficulties, family='family' if family else None, water='water' if water else None, bicycles='bicycles' if bicycles else None, disabled='disabled' if disabled else None) }}" class="pagination-link">עמוד הבא &raquo;</a>
+            {% endif %}
+        </div>
+    </div>
+
     {% else %}
     <p>לא נמצאו תוצאות.</p>
     {% endif %}
@@ -80,4 +99,69 @@
             console.error('Error fetching weather data:', error);
         });
 </script>
+<style>
+    .rtl-content {
+        direction: rtl;
+        text-align: right;
+    }
+
+    #manage-trails {
+        padding: 20px;
+    }
+
+    .add-trail-btn {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding: 10px 15px;
+        background-color: #34A0A4;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .add-trail-btn:hover {
+        background-color: #168AAD;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+
+    .pagination-container {
+        text-align: right; /* Align pagination container to the right */
+        margin-top: 20px;
+    }
+
+    .pagination {
+        display: inline-block; /* Ensure the pagination links are inline-block */
+    }
+
+    .pagination-link {
+        direction: rtl; /* Align text direction right-to-left */
+        margin: 0 5px;
+        padding: 5px 10px;
+        text-decoration: none;
+        color: #000;
+        border: 1px solid #000;
+        display: inline-block;
+    }
+
+    .pagination-link:hover {
+        background-color: #ddd;
+    }
+</style>
 {% endblock %}

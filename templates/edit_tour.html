@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}ערוך סיור{% endblock %}
+
+{% block content %}
+<main>
+    <section id="edit-tour" class="rtl-form">
+        <h1>ערוך סיור</h1>
+        <form method="POST" action="{{ url_for('edit_tour', tour_id=tour.id) }}" onsubmit="formatDate()">
+            <div class="form-group">
+                <label for="title">שם הסיור:</label>
+                <input type="text" id="title" name="title" value="{{ tour.title }}" required>
+            </div>
+            <div class="form-group">
+                <label for="trail_name">שם המסלול:</label>
+                <select id="trail_name" name="trail_name" required>
+                    {% for trail in trails %}
+                        <option value="{{ trail }}" {% if tour.trail_name == trail %}selected{% endif %}>{{ trail }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="date">תאריך:</label>
+                {% set date_parts = tour.date.split('/') %}
+                {% if date_parts|length == 3 %}
+                    {% set day = date_parts[0] %}
+                    {% set month = date_parts[1] %}
+                    {% set year = date_parts[2] %}
+                    {% set formatted_date = year ~ '-' ~ month ~ '-' ~ day %}
+                {% else %}
+                    {% set formatted_date = '' %}
+                {% endif %}
+                <input type="date" id="date" name="date" value="{{ formatted_date }}" required>
+            </div>
+            <div class="form-group">
+                <label for="time">שעה:</label>
+                <div class="time-select">
+                    <select id="minute" name="minute" required>
+                        {% for minute in range(0, 60) %}
+                            <option value="{{ "%02d"|format(minute) }}" {% if "%02d"|format(minute) == tour.time.split(':')[1] %}selected{% endif %}>{{ "%02d"|format(minute) }}</option>
+                        {% endfor %}
+                    </select>
+                    <span>:</span>
+                    <select id="hour" name="hour" required>
+                        {% for hour in range(0, 24) %}
+                            <option value="{{ "%02d"|format(hour) }}" {% if "%02d"|format(hour) == tour.time.split(':')[0] %}selected{% endif %}>{{ "%02d"|format(hour) }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description">תיאור:</label>
+                <textarea id="description" name="description" rows="5" required>{{ tour.description }}</textarea>
+            </div>
+            <button type="submit">שמור שינויים</button>
+        </form>
+    </section>
+</main>
+
+<script>
+    // פונקציה לעדכון הפורמט של התאריך לפני שליחת הטופס
+    function formatDate() {
+        const dateInput = document.getElementById('date');
+        const dateValue = new Date(dateInput.value);
+
+        // המרת התאריך לפורמט yyyy-mm-dd
+        const day = String(dateValue.getDate()).padStart(2, '0');
+        const month = String(dateValue.getMonth() + 1).padStart(2, '0'); // חודשים ב-JS מתחילים מ-0
+        const year = dateValue.getFullYear();
+
+        // הגדרת ערך חדש בשדה התאריך
+        dateInput.value = `${year}-${month}-${day}`;
+    }
+</script>
+
+<style>
+    .rtl-form {
+        direction: rtl;
+        text-align: right;
+    }
+
+    #edit-tour {
+        padding: 20px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        width: 150px;
+        text-align: right;
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+        padding: 10px;
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    .time-select {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    button {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        width: fit-content;
+        margin-top: 10px;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+</style>
+{% endblock %}

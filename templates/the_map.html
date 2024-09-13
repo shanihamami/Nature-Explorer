@@ -16,6 +16,13 @@
             height: 500px;
             width: 100%;
         }
+        /* יישור כל התוכן לימין */
+        .leaflet-popup-content {
+            text-align: right;
+        }
+        .leaflet-popup-content-wrapper {
+            direction: rtl;
+        }
     </style>
 </head>
 <body>
@@ -26,19 +33,6 @@
          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
          crossorigin=""></script>
         <script>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Map - Go2Haifa</title>
-
-        <!-- Link to your styles.css -->
-        <link rel="stylesheet" href="styles.css">
-
-        <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
-        <!-- Leaflet JavaScript -->
-        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-        <script>
             // Initialize the map and set its view to a specific location
             var map = L.map('map').setView([32.794044, 34.989571], 13);
 
@@ -48,11 +42,26 @@
             }).addTo(map);
 
             // Function to add markers to the map
-            function addMarkers(trails) {
+            function addMarkers(trails, tours) {
                 trails.forEach(function(trail) {
                     var coords = trail.start_point.replace('[', '').replace(']', '').split(', ');
                     var lat = parseFloat(coords[0]);
                     var lng = parseFloat(coords[1]);
+
+                    // Find tours for this trail
+                    var futureTours = tours.filter(function(tour) {
+                        return tour.trail_name === trail.trail_name; // התאמת שם השביל עם שם הסיור
+                    });
+
+                    // Generate the future tours HTML
+                    var futureToursHTML = '';
+                    if (futureTours.length > 0) {
+                        futureTours.forEach(function(tour) {
+                            futureToursHTML += `<a href="/register/${tour.title}">${tour.date}</a><br>`;
+                        });
+                    } else {
+                        futureToursHTML = 'אין סיורים עתידיים';
+                    }
 
                     var marker = L.marker([lat, lng]).addTo(map);
                     marker.bindPopup(`
@@ -62,7 +71,9 @@
                         <strong>אזור בחיפה:</strong> ${trail.main_location}<br>
                         <strong>אורך (ק"מ):</strong> ${trail.lengthKM}<br>
                         <strong>רמת קושי:</strong> ${trail.difficulty}<br>
-                        <strong>נקודות עניין:</strong> ${trail.point_of_interest}
+                        <strong>נקודות עניין:</strong> ${trail.point_of_interest}<br>
+                        <strong>סיורים עתידיים:</strong><br>
+                        ${futureToursHTML}
                         </div>
                     `);
                 });
@@ -72,7 +83,9 @@
             fetch('/api/trails')
                 .then(response => response.json())
                 .then(data => {
-                    addMarkers(data);
+                    // Fetch tours data (passed from the Flask backend)
+                    var tours = {{ tours|tojson }};
+                    addMarkers(data, tours);
                 })
                 .catch(error => {
                     console.error('Error fetching trail data:', error);
@@ -82,4 +95,6 @@
 </body>
 </html>
 
-{% endblock %}
+{% endblock %}
+
+

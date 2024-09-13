@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}משתתפים בסיור{% endblock %}
+
+{% block content %}
+    <main class="container mt-4">
+        <h1 class="text-right">משתתפים בסיור</h1>
+        <table class="table table-bordered text-right" dir="rtl">
+            <thead>
+                <tr>
+                    <th>שם מלא</th>
+                    <th>מספר תעודת זהות</th>
+                    <th>מספר טלפון</th>
+                    <th>מספר משתתפים</th>
+                    <th>הערות</th>
+                </tr>
+            </thead>
+            <tbody id="participants-body">
+                <!-- Participants will be added here -->
+            </tbody>
+        </table>
+
+        <script>
+            function fetchParticipants() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const tourTitle = urlParams.get('tour');
+
+                fetch(`/api/participants?tour=${encodeURIComponent(tourTitle)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const participantsBody = document.getElementById('participants-body');
+                        if (data.length > 0) {
+                            let html = '';
+                            data.forEach(participant => {
+                                html += `
+                                    <tr>
+                                        <td>${participant.full_name}</td>
+                                        <td>${participant.id_card}</td>
+                                        <td>${participant.phone_number || 'לא צוין'}</td>
+                                        <td>${participant.number_of_participants}</td>
+                                        <td>${participant.comments || 'אין הערות'}</td>
+                                    </tr>
+                                `;
+                            });
+                            participantsBody.innerHTML = html;
+                        } else {
+                            participantsBody.innerHTML = '<tr><td colspan="5" class="text-center">עדיין לא נרשמו לסיור זה</td></tr>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching participant data:', error);
+                    });
+            }
+
+            // Fetch participants on page load
+            document.addEventListener('DOMContentLoaded', fetchParticipants);
+        </script>
+    </main>
+{% endblock %}
+

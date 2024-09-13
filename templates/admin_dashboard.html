@@ -34,25 +34,27 @@
                 </div>
             </div>
             <div class="admin-section">
-                <h2>צפייה ברישומים</h2>
-                <p>צפה ברשימת האנשים שנרשמו לסיורים.</p>
-                <a href="{{ url_for('view_registrations') }}" class="btn btn-primary">עבור לצפייה ברישומים</a>
+                <h2>צפייה בסיורים</h2>
+                <p>צפה ברשימת הסיורים המודרכים.</p>
+                <a href="{{ url_for('view_registrations') }}" class="btn btn-primary">עבור לצפייה בסיורים</a>
                 <div class="preview">
-                    <h5>תצוגה מקדימה של רישומים</h5>
+                    <h5>תצוגה מקדימה של סיורים</h5>
                     <table>
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>שם מלא</th>
-                                <th>דוא"ל</th>
+                                <th>שם הסיור</th>
+                                <th>שביל</th>
+                                <th>תאריך</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for registration in registrations %}
+                            {% for tour in tours %}
                             <tr>
-                                <td>{{ registration[0] }}</td>
-                                <td>{{ registration[1] }}</td>
-                                <td>{{ registration[2] }}</td>
+                                <td>{{ tour[0] }}</td>
+                                <td>{{ tour[1] }}</td>
+                                <td>{{ tour[2] }}</td>
+                                <td>{{ tour[3] }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>

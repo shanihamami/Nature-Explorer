@@ -1,60 +1,174 @@
 {% extends "base.html" %}
 
-{% block title %}צפייה ברישומים{% endblock %}
+{% block title %}צפייה בסיורים{% endblock %}
 
 {% block content %}
-<main>
-    <section id="view-registrations">
-        <h1>צפייה בהרשמות</h1>
-        <table>
+    <main class="container mt-4" dir="rtl" lang="he">
+        <h1 class="text-right">רשימת סיורים</h1>
+        <div class="text-right">
+            <a href="{{ url_for('add_tour') }}" class="add-tour-btn">הוסף סיור חדש</a>
+        </div>
+        <table class="table table-bordered text-right">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>שם מלא</th>
-                    <th>דוא"ל</th>
-                    <th>טלפון</th>
-                    <th>מסלול ID</th>
-                    <th>תאריך הרשמה</th>
+                    <th>שם הסיור</th>
+                    <th>שם המסלול</th>
+                    <th>תאריך</th>
+                    <th>שעה</th>
+                    <th>תיאור</th>
+                    <th>משתתפים</th>
+                    <th>פעולות</th>
                 </tr>
             </thead>
-            <tbody>
-                {% for registration in registrations %}
-                <tr>
-                    <td>{{ registration[0] }}</td>  <!-- ID -->
-                    <td>{{ registration[1] }}</td>  <!-- Fullname -->
-                    <td>{{ registration[2] }}</td>  <!-- Email -->
-                    <td>{{ registration[3] }}</td>  <!-- Phone -->
-                    <td>{{ registration[4] }}</td>  <!-- Trail ID -->
-                    <td>{{ registration[5] }}</td>  <!-- Registration Date -->
-                </tr>
-                {% endfor %}
+            <tbody id="tours-body">
+                <!-- Tours will be added here -->
             </tbody>
         </table>
-    </section>
-</main>
 
-<style>
-    #view-registrations {
-        direction: rtl;
-        text-align: right;
-    }
+        <div class="pagination">
+            <button id="prev-page" disabled>&laquo; עמוד קודם</button>
+            <button id="next-page">עמוד הבא &raquo;</button>
+        </div>
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+        <script>
+            let currentPage = 1;
+            const toursPerPage = 10;
+            let toursData = [];
 
-    table, th, td {
-        border: 1px solid black;
-    }
+            // פונקציה להמרת תאריך לפורמט yyyy-mm-dd
+            function convertDateFormat(dateStr) {
+                const [day, month, year] = dateStr.split('/');
+                return `${year}-${month}-${day}`;
+            }
 
-    th, td {
-        padding: 10px;
-        text-align: center;
-    }
+            function renderTable(tours, page) {
+                const start = (page - 1) * toursPerPage;
+                const end = start + toursPerPage;
+                const paginatedTours = tours.slice(start, end);
+                const toursBody = document.getElementById('tours-body');
+                let html = '';
 
-    th {
-        background-color: #f4f4f4;
-    }
-</style>
+                paginatedTours.forEach(tour => {
+                    html += `
+                        <tr>
+                            <td>${tour.title}</td>
+                            <td>${tour.trail_name}</td>
+                            <td>${tour.date}</td>
+                            <td>${tour.time}</td>
+                            <td>${tour.description}</td>
+                            <td>
+                                ${tour.participants.length > 0 ?
+                                    `<a class="btn btn-primary" href="/view-participants?tour=${encodeURIComponent(tour.title)}">הצג משתתפים</a>` :
+                                    '<p>עדיין לא נרשמו לסיור זה</p>'}
+                            </td>
+                            <td>
+                                <a href="/edit_tour/${tour.id}">ערוך</a> |
+                                <form action="javascript:void(0);" method="POST" style="display:inline;" onsubmit="deleteTour('${tour.id}')">
+                                    <button type="submit" onclick="return confirm('האם אתה בטוח שברצונך למחוק סיור זה?')" style="background:none;border:none;color:blue;cursor:pointer;text-decoration:underline;">מחק</button>
+                                </form>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                toursBody.innerHTML = html;
+
+                document.getElementById('prev-page').disabled = (page === 1);
+                document.getElementById('next-page').disabled = (end >= tours.length);
+            }
+
+            function fetchTours() {
+                fetch('/api/tours')
+                    .then(response => response.json())
+                    .then(data => {
+                        // המרת התאריך לפורמט yyyy-mm-dd לצורך מיון
+                        toursData = data.sort((a, b) => new Date(convertDateFormat(a.date)) - new Date(convertDateFormat(b.date)));
+                        renderTable(toursData, currentPage);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching tour data:', error);
+                    });
+            }
+
+            function deleteTour(tourId) {
+                const url = `/delete_tour/${tourId}`;
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({ 'tour_id': tourId })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        console.error('Error deleting tour:', response.statusText);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+
+            document.getElementById('prev-page').addEventListener('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderTable(toursData, currentPage);
+                }
+            });
+
+            document.getElementById('next-page').addEventListener('click', function() {
+                if (currentPage * toursPerPage < toursData.length) {
+                    currentPage++;
+                    renderTable(toursData, currentPage);
+                }
+            });
+
+            // Fetch tours on page load
+            document.addEventListener('DOMContentLoaded', fetchTours);
+        </script>
+
+        <style>
+            .pagination {
+                margin-top: 20px;
+                text-align: center;
+            }
+
+            .pagination button {
+                margin: 0 5px;
+                padding: 5px 10px;
+                cursor: pointer;
+                border: 1px solid #000;
+                background-color: #f8f9fa;
+                color: #000;
+            }
+
+            .pagination button:disabled {
+                background-color: #ccc;
+                cursor: not-allowed;
+            }
+
+            .pagination button:hover:not(:disabled) {
+                background-color: #ddd;
+            }
+            .add-tour-btn {
+                display: inline-block;
+                margin-bottom: 15px;
+                padding: 10px 15px;
+                background-color: #34A0A4;
+                color: #fff;
+                text-decoration: none;
+                border-radius: 5px;
+            }
+
+            .add-tour-btn:hover {
+                background-color: #168AAD;
+            }
+        </style>
+    </main>
 {% endblock %}
+
+
+
+
+

@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1 class="text-right">סיורים מודרכים קרובים</h1>
+
+  {% if tours %}
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th class="text-right">להרשמה</th>
+          <th class="text-right">פרטים</th>
+          <th class="text-right">שעה</th>
+          <th class="text-right">תאריך</th>
+          <th class="text-right">שביל</th>
+          <th class="text-right">שם הסיור</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tour in tours %}
+          <tr>
+            <td class="text-right">
+                <a href="{{ url_for('register', tour_title=tour[0]) }}">הרשמה</a>
+            </td>
+            <td class="text-right">{{ tour[4] }}</td>
+            <td class="text-right">{{ tour[3] }}</td>
+            <td class="text-right">{{ tour[2] }}</td>
+            <td class="text-right">{{ tour[1] }}</td>
+            <td class="text-right">{{ tour[0] }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="pagination-container">
+        <div class="pagination">
+            {% if has_prev %}
+            <a href="{{ url_for('guided_tours', page=page-1) }}" class="pagination-link">&laquo; עמוד קודם</a>
+            {% endif %}
+            {% if has_next %}
+            <a href="{{ url_for('guided_tours', page=page+1) }}" class="pagination-link">עמוד הבא &raquo;</a>
+            {% endif %}
+        </div>
+    </div>
+  {% else %}
+    <p class="text-right">אין סיורים מודרכים קרובים.</p>
+  {% endif %}
+
+<style>
+    .rtl-content {
+        direction: rtl;
+        text-align: right;
+    }
+
+    #manage-trails {
+        padding: 20px;
+    }
+
+    .add-trail-btn {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding: 10px 15px;
+        background-color: #34A0A4;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .add-trail-btn:hover {
+        background-color: #168AAD;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+
+    .pagination-container {
+        text-align: right; /* Align pagination container to the right */
+        margin-top: 20px;
+    }
+
+    .pagination {
+        display: inline-block; /* Ensure the pagination links are inline-block */
+    }
+
+    .pagination-link {
+        direction: rtl; /* Align text direction right-to-left */
+        margin: 0 5px;
+        padding: 5px 10px;
+        text-decoration: none;
+        color: #000;
+        border: 1px solid #000;
+        display: inline-block;
+    }
+
+    .pagination-link:hover {
+        background-color: #ddd;
+    }
+</style>
+{% endblock %}
+
