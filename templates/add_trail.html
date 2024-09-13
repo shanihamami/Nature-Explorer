@@ -9,7 +9,13 @@
         <form method="POST" action="{{ url_for('add_trail') }}">
             <div class="form-group">
                 <label for="main_location">מיקום ראשי:</label>
-                <input type="text" id="main_location" name="main_location" required>
+                <select id="main_location" name="main_location" required>
+                    <option value="שבילי יער רמת אלון">שבילי יער רמת אלון</option>
+                    <option value="ואדי לטם">ואדי לטם</option>
+                    <option value="גבעת העיזים">גבעת העיזים</option>
+                    <option value="ואדי עובדיה">ואדי עובדיה</option>
+                    <option value="נחל סעדיה">נחל סעדיה</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="trail_name">שם המסלול:</label>
@@ -33,11 +39,20 @@
             </div>
             <div class="form-group">
                 <label for="difficulty">קושי:</label>
-                <input type="text" id="difficulty" name="difficulty" required>
+                <select id="difficulty" name="difficulty" required>
+                    <option value="קל">קל</option>
+                    <option value="בינוני">בינוני</option>
+                    <option value="קשה">קשה</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="season">עונה:</label>
-                <input type="text" id="season" name="season" required>
+                <select id="season" name="season" required>
+                    <option value="קיץ">קיץ</option>
+                    <option value="חורף">חורף</option>
+                    <option value="סתיו">סתיו</option>
+                    <option value="אביב">אביב</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="point_of_interest">נקודות עניין:</label>
@@ -49,7 +64,11 @@
             </div>
             <div class="form-group">
                 <label for="duration">משך המסלול:</label>
-                <input type="text" id="duration" name="duration" required>
+                <select id="duration" name="duration" required>
+                    <option value="חצי שעה-שעה">חצי שעה-שעה</option>
+                    <option value="שעה-שעתיים">שעה-שעתיים</option>
+                    <option value="שעתיים+">שעתיים+</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="possibility_of_entering_water">אפשרות כניסה למים:</label>

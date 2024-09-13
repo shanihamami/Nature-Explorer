@@ -9,7 +9,13 @@
         <form method="POST" action="{{ url_for('edit_trail', trail_id=trail.id) }}">
             <div class="form-group">
                 <label for="main_location">מיקום עיקרי:</label>
-                <input type="text" id="main_location" name="main_location" value="{{ trail.main_location }}" required>
+                <select id="main_location" name="main_location" required>
+                    <option value="שבילי יער רמת אלון" {% if trail.main_location == "שבילי יער רמת אלון" %}selected{% endif %}>שבילי יער רמת אלון</option>
+                    <option value="ואדי לטם" {% if trail.main_location == "ואדי לטם" %}selected{% endif %}>ואדי לטם</option>
+                    <option value="גבעת העיזים" {% if trail.main_location == "גבעת העיזים" %}selected{% endif %}>גבעת העיזים</option>
+                    <option value="ואדי עובדיה" {% if trail.main_location == "ואדי עובדיה" %}selected{% endif %}>ואדי עובדיה</option>
+                    <option value="נחל סעדיה" {% if trail.main_location == "נחל סעדיה" %}selected{% endif %}>נחל סעדיה</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="trail_name">שם המסלול:</label>
@@ -33,11 +39,20 @@
             </div>
             <div class="form-group">
                 <label for="difficulty">קושי:</label>
-                <input type="text" id="difficulty" name="difficulty" value="{{ trail.difficulty }}" required>
+                <select id="difficulty" name="difficulty" required>
+                    <option value="קל" {% if trail.difficulty == "קל" %}selected{% endif %}>קל</option>
+                    <option value="בינוני" {% if trail.difficulty == "בינוני" %}selected{% endif %}>בינוני</option>
+                    <option value="קשה" {% if trail.difficulty == "קשה" %}selected{% endif %}>קשה</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="season">עונה:</label>
-                <input type="text" id="season" name="season" value="{{ trail.season }}" required>
+                <select id="season" name="season" required>
+                    <option value="קיץ" {% if trail.season == "קיץ" %}selected{% endif %}>קיץ</option>
+                    <option value="חורף" {% if trail.season == "חורף" %}selected{% endif %}>חורף</option>
+                    <option value="סתיו" {% if trail.season == "סתיו" %}selected{% endif %}>סתיו</option>
+                    <option value="אביב" {% if trail.season == "אביב" %}selected{% endif %}>אביב</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="point_of_interest">נקודות עניין:</label>
@@ -49,7 +64,11 @@
             </div>
             <div class="form-group">
                 <label for="duration">משך המסלול:</label>
-                <input type="text" id="duration" name="duration" value="{{ trail.duration }}" required>
+                <select id="duration" name="duration" required>
+                    <option value="חצי שעה-שעה" {% if trail.duration == "חצי שעה-שעה" %}selected{% endif %}>חצי שעה-שעה</option>
+                    <option value="שעה-שעתיים" {% if trail.duration == "שעה-שעתיים" %}selected{% endif %}>שעה-שעתיים</option>
+                    <option value="שעתיים+" {% if trail.duration == "שעתיים+" %}selected{% endif %}>שעתיים+</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="possibility_of_entering_water">אפשרות כניסה למים:</label>
