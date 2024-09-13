@@ -53,4 +53,12 @@ CREATE TABLE IF NOT EXISTS organized_tours (
     FOREIGN KEY (trail_name) REFERENCES trails(trail_name)  -- Foreign key constraint
 );
 
+DROP TABLE IF EXISTS news;
+CREATE TABLE IF NOT EXISTS news (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    publish_date TEXT NOT NULL
+);
+
+
 

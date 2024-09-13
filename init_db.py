@@ -120,6 +120,7 @@ for tour in organized_tours_data:
 connection.commit()
 connection.close()
 
+
 # Initialize registration database
 connection_reg = sqlite3.connect('registration.db')
 with open('schema.sql') as f:
