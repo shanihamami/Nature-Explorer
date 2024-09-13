@@ -4,8 +4,11 @@
 
 {% block content %}
     <main class="container mt-4" dir="rtl" lang="he">
-        <h1 class="text-right">רשימת סיורים</h1>
         <div class="text-right">
+            <a href="{{ url_for('admin_dashboard') }}" class="back-btn">חזרה ללוח בקרה</a>
+        </div>
+        <h1 class="text-right">רשימת סיורים</h1>
+        <div class="text-left">
             <a href="{{ url_for('add_tour') }}" class="add-tour-btn">הוסף סיור חדש</a>
         </div>
         <table class="table table-bordered text-right">
@@ -162,6 +165,19 @@
             }
 
             .add-tour-btn:hover {
+                background-color: #168AAD;
+            }
+            .back-btn {
+                display: inline-block;
+                margin-bottom: 15px;
+                padding: 10px 15px;
+                background-color: rgb(52, 160, 164);
+                color: #fff;
+                text-decoration: none;
+                border-radius: 5px;
+            }
+
+            .back-btn:hover {
                 background-color: #168AAD;
             }
         </style>

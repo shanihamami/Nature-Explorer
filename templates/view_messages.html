@@ -4,6 +4,9 @@
 
 {% block content %}
 <main>
+    <div class="text-right">
+        <a href="{{ url_for('admin_dashboard') }}" class="back-btn">חזרה ללוח בקרה</a>
+    </div>
     <section id="view-messages">
         <h1>צפייה בהודעות</h1>
         <table>
@@ -53,6 +56,19 @@
 
     th {
         background-color: #f4f4f4;
+    }
+    .back-btn {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding: 10px 15px;
+        background-color: rgb(52, 160, 164);
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .back-btn:hover {
+        background-color: #168AAD;
     }
 </style>
 {% endblock %}

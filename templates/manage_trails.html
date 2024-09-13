@@ -4,9 +4,14 @@
 
 {% block content %}
 <main>
+    <div class="text-right">
+        <a href="{{ url_for('admin_dashboard') }}" class="back-btn">חזרה ללוח בקרה</a>
+    </div>
     <section id="manage-trails" class="rtl-content">
         <h1>ניהול מסלולים</h1>
-        <a href="{{ url_for('add_trail') }}" class="add-trail-btn">הוסף מסלול חדש</a>
+        <div class="text-left">
+            <a href="{{ url_for('add_trail') }}" class="add-trail-btn">הוסף מסלול חדש</a>
+        </div>
         <table>
             <thead>
                 <tr>
@@ -102,6 +107,19 @@
 
     .pagination a:hover {
         background-color: #ddd;
+    }
+    .back-btn {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding: 10px 15px;
+        background-color: rgb(52, 160, 164);
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .back-btn:hover {
+        background-color: #168AAD;
     }
 </style>
 {% endblock %}
