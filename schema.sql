@@ -24,7 +24,6 @@ DROP TABLE IF EXISTS participants;
 CREATE TABLE participants(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     full_name TEXT NOT NULL,
-    id_card TEXT NOT NULL,
     phone_number TEXT,
     number_of_participants INTEGER,
     tour TEXT,

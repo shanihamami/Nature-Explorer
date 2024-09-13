@@ -216,16 +216,15 @@ def register(tour_title):
     tour_title = urllib.parse.unquote(tour_title)
     if request.method == 'POST':
         full_name = request.form['full_name']
-        id_card = request.form['id_card']
         phone_number = request.form['phone_number']
         number_of_participants = request.form['number_of_participants']
         comments = request.form['comments']
 
         query = """
-        INSERT INTO participants (full_name, id_card, phone_number, number_of_participants, tour, comments)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO participants (full_name,  phone_number, number_of_participants, tour, comments)
+        VALUES (?, ?, ?, ?, ?)
         """
-        params = (full_name, id_card, phone_number, number_of_participants, tour_title, comments)
+        params = (full_name, phone_number, number_of_participants, tour_title, comments)
 
         try:
             db = get_db_registration()
@@ -659,7 +658,6 @@ def api_participants():
     for participant in participants:
         participants_list.append({
             "full_name": participant["full_name"],
-            "id_card": participant["id_card"],
             "phone_number": participant["phone_number"],
             "number_of_participants": participant["number_of_participants"],
             "comments": participant["comments"]

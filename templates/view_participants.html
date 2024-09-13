@@ -9,7 +9,6 @@
             <thead>
                 <tr>
                     <th>שם מלא</th>
-                    <th>מספר תעודת זהות</th>
                     <th>מספר טלפון</th>
                     <th>מספר משתתפים</th>
                     <th>הערות</th>
@@ -35,7 +34,6 @@
                                 html += `
                                     <tr>
                                         <td>${participant.full_name}</td>
-                                        <td>${participant.id_card}</td>
                                         <td>${participant.phone_number || 'לא צוין'}</td>
                                         <td>${participant.number_of_participants}</td>
                                         <td>${participant.comments || 'אין הערות'}</td>
