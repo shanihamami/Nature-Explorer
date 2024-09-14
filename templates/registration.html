@@ -38,8 +38,9 @@
             </div>
             <div class="form-group">
                 <label for="number_of_participants">מספר אנשים:</label>
-                <input type="text" id="number_of_participants" name="number_of_participants" class="form-control" required>
+                <input type="number" id="number_of_participants" name="number_of_participants" class="form-control" min="1" step="1" required>
             </div>
+
             <div class="form-group">
                 <label for="comments">הערות:</label>
                 <textarea id="comments" name="comments" rows="4" cols="50" class="form-control"></textarea>

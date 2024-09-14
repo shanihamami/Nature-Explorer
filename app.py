@@ -279,7 +279,11 @@ def admin_dashboard():
     cursor_msgs.execute("SELECT id, fullname, message FROM messages LIMIT 5")
     messages = cursor_msgs.fetchall()
 
-    return render_template('admin_dashboard.html', trails=trails, tours=tours, messages=messages)
+    cursor_msgs = db_registration.cursor()
+    cursor_msgs.execute("SELECT id, title FROM news LIMIT 5")
+    news = cursor_msgs.fetchall()
+
+    return render_template('admin_dashboard.html', trails=trails, tours=tours, messages=messages, news=news)
 
 @app.route('/manage_trails')
 def manage_trails():
@@ -731,6 +735,7 @@ def api_tours():
     tours_query = "SELECT * FROM organized_tours ORDER BY SUBSTR(date, 7, 4) || '-' || SUBSTR(date, 4, 2) || '-' || SUBSTR(date, 1, 2) "
     tours = db.execute(tours_query).fetchall()
 
+
     # ארגון סיורים עם נרשמים
     tours_list = []
     db = get_db_registration()
@@ -738,6 +743,8 @@ def api_tours():
         # השתמש בעמודה הנכונה שנקראת 'tour'
         participants_query = "SELECT * FROM participants WHERE tour = ?"
         participants = db.execute(participants_query, (tour['title'],)).fetchall()
+        num_participants_query = "SELECT COALESCE(SUM(number_of_participants), 0) FROM participants WHERE tour = ?"
+        num_participants = db.execute(num_participants_query, (tour['title'],)).fetchone()[0]
 
         tours_list.append({
             'id': tour['id'],
@@ -746,7 +753,8 @@ def api_tours():
             'date': tour['date'],
             'time': tour['time'],
             'description': tour['description'],
-            'participants': [dict(participant) for participant in participants]
+            'participants': [dict(participant) for participant in participants],
+            'num_participants': num_participants
         })
 
     return jsonify(tours_list)

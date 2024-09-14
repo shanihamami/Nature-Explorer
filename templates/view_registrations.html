@@ -19,7 +19,8 @@
                     <th>תאריך</th>
                     <th>שעה</th>
                     <th>תיאור</th>
-                    <th>משתתפים</th>
+                    <th>מספר משתתפים</th>
+                    <th>רשימת משתתפים</th>
                     <th>פעולות</th>
                 </tr>
             </thead>
@@ -59,6 +60,7 @@
                             <td>${tour.date}</td>
                             <td>${tour.time}</td>
                             <td>${tour.description}</td>
+                            <td>${tour.num_participants}</td>
                             <td>
                                 ${tour.participants.length > 0 ?
                                     `<a class="btn btn-primary" href="/view-participants?tour=${encodeURIComponent(tour.title)}">הצג משתתפים</a>` :

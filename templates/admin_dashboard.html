@@ -16,7 +16,6 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>מיקום ראשי</th>
                                 <th>שם שביל</th>
                             </tr>
@@ -24,7 +23,6 @@
                         <tbody>
                             {% for trail in trails %}
                             <tr>
-                                <td>{{ trail[0] }}</td>
                                 <td>{{ trail[1] }}</td>
                                 <td>{{ trail[2] }}</td>
                             </tr>
@@ -34,15 +32,14 @@
                 </div>
             </div>
             <div class="admin-section">
-                <h2>צפייה בסיורים</h2>
-                <p>צפה ברשימת הסיורים המודרכים.</p>
+                <h2>ניהול סיורים</h2>
+                <p>צפה ועדכן רשימת סיורים מודרכים.</p>
                 <a href="{{ url_for('view_registrations') }}" class="btn btn-primary">עבור לצפייה בסיורים</a>
                 <div class="preview">
                     <h5>תצוגה מקדימה של סיורים</h5>
                     <table>
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>שם הסיור</th>
                                 <th>שביל</th>
                                 <th>תאריך</th>
@@ -51,7 +48,6 @@
                         <tbody>
                             {% for tour in tours %}
                             <tr>
-                                <td>{{ tour[0] }}</td>
                                 <td>{{ tour[1] }}</td>
                                 <td>{{ tour[2] }}</td>
                                 <td>{{ tour[3] }}</td>
@@ -70,7 +66,6 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>שם מלא</th>
                                 <th>הודעה</th>
                             </tr>
@@ -78,9 +73,30 @@
                         <tbody>
                             {% for message in messages %}
                             <tr>
-                                <td>{{ message[0] }}</td>
                                 <td>{{ message[1] }}</td>
                                 <td>{{ message[2] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="admin-section">
+                <h2>ניהול עדכונים</h2>
+                <p>נהל את רשימת העדכונים למשתמש המופיעים בסרגל החדשות של האתר.</p>
+                <a href="{{ url_for('manage_news') }}" class="btn btn-primary">עבור לניהול עדכונים</a>
+                <div class="preview">
+                    <h5>תצוגה מקדימה של עדכונים</h5>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>עדכון</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for new in news %}
+                            <tr>
+                                <td>{{ new[1] }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -103,6 +119,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
+    justify-content: space-between;
 }
 
 .admin-section {
@@ -110,7 +127,7 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 1rem;
-    flex: 1;
+    flex: 0 1 calc(50% - 2rem);
     min-width: 300px; /* Ensure it doesn't get too narrow */
 }
 
