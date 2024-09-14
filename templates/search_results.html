@@ -16,6 +16,7 @@
                 <th>אורך (ק"מ)</th>
                 <th>רמת קושי</th>
                 <th>עונה</th>
+                <th>אטרקציות</th>
                 <th>מזג אוויר</th>
                 <th>סיורים עתידיים</th>
             </tr>
@@ -29,6 +30,7 @@
                 <td>{{ result.lengthKM }}</td>
                 <td>{{ result.difficulty }}</td>
                 <td>{{ result.season }}</td>
+                <td>{{ result.interactive_activity }}</td>
                 <td id="weather-{{ loop.index0 }}" class="weather-cell">Loading...</td> <!-- Add an ID to the weather cell -->
                 <td>
                     {% set future_tours_for_trail = future_tours.get(result.trail_name, []) %}
