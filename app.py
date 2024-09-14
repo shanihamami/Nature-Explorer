@@ -570,6 +570,8 @@ def delete_tour(tour_id):
         print("SQLite error:", e)
         return f"An error occurred while deleting data: {e}"
 
+
+
 @app.route('/guided_tours')
 def guided_tours():
     conn = sqlite3.connect('trails.db')
@@ -664,6 +666,31 @@ def api_participants():
         })
 
     return jsonify(participants_list)
+
+def get_latest_news():
+    # חיבור ל-Database
+    conn = sqlite3.connect('registration.db')
+    cursor = conn.cursor()
+
+    # שאילתא לשליפת 5 העדכונים האחרונים
+    cursor.execute('''
+        SELECT title
+        FROM news
+        ORDER BY publish_date DESC
+        LIMIT 5
+    ''')
+    latest_news = cursor.fetchall()
+
+    # סגירת החיבור
+    conn.close()
+
+    return [item[0] for item in latest_news]  # החזרת רשימת הכותרות
+
+# יצירת ה-API שמחזיר את העדכונים ב-JSON
+@app.route('/api/news', methods=['GET'])
+def api_get_news():
+    news_titles = get_latest_news()
+    return jsonify(news_titles)  # החזרת הנתונים כ-JSON
 
 
 if __name__ == '__main__':
