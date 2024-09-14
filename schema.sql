@@ -57,7 +57,9 @@ DROP TABLE IF EXISTS news;
 CREATE TABLE IF NOT EXISTS news (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
-    publish_date TEXT NOT NULL
+    publish_date TEXT NOT NULL,
+    active BOOLEAN NOT NULL,
+    high_importance BOOLEAN NOT NULL
 );
 
 

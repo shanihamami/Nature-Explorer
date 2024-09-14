@@ -131,14 +131,14 @@ connection = sqlite3.connect('registration.db')
 cur = connection.cursor()
 
 news_data = [
-    ('סיור לנחל לוטם יוצא ב- 15/10/2024, לפרטים ולרישום היכנסו לעמוד "סיורים מודרכים"', '2024-01-01'),
-    ('מוזמנים להאזין ל"שעה בשבוע" עם מובילת "בשבילי חיפה" ענבל חן ברגב. זמין בספוטיפיי או ביוטיוב', '2024-02-01')
+    ('סיור לנחל לוטם יוצא ב- 15/10/2024, לפרטים ולרישום היכנסו לעמוד "סיורים מודרכים"', '2024-01-01', 1, 0),
+    ('מוזמנים להאזין ל"שעה בשבוע" עם מובילת "בשבילי חיפה" ענבל חן ברגב. זמין בספוטיפיי או ביוטיוב', '2024-02-01', 1, 0)
 ]
 
 for news in news_data:
     cur.execute("""
-    INSERT INTO news (title,  publish_date)
-    VALUES (?, ?)
+    INSERT INTO news (title,  publish_date, active, high_importance)
+    VALUES (?, ?, ?, ?)
     """, news)
 
 # Commit changes and close connection
