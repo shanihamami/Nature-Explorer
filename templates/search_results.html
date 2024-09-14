@@ -17,7 +17,6 @@
                 <th>רמת קושי</th>
                 <th>עונה</th>
                 <th>אטרקציות</th>
-                <th>מזג אוויר</th>
                 <th>סיורים עתידיים</th>
             </tr>
         </thead>
@@ -31,7 +30,6 @@
                 <td>{{ result.difficulty }}</td>
                 <td>{{ result.season }}</td>
                 <td>{{ result.interactive_activity }}</td>
-                <td id="weather-{{ loop.index0 }}" class="weather-cell">Loading...</td> <!-- Add an ID to the weather cell -->
                 <td>
                     {% set future_tours_for_trail = future_tours.get(result.trail_name, []) %}
                     {% if future_tours_for_trail %}
@@ -63,44 +61,6 @@
     {% endif %}
 </main>
 
-<script>
-    const apiKey = '9142ce21742a02f12fd544a3a3e34cdd'; // Working OpenWeatherMap API key
-    const city = 'Haifa';
-
-    fetch(https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data && data.weather && data.weather.length > 0) {
-                const weatherDescription = data.weather[0].description;
-                const weatherTemp = data.main.temp;
-                const weatherIcon = data.weather[0].icon;
-                const weatherHTML = `
-                    <div style="display: flex; align-items: center;">
-                        <img src="http://openweathermap.org/img/wn/${weatherIcon}.png" alt="${weatherDescription}" title="${weatherDescription}" style="margin-right: 5px; width: 30px; height: 30px;">
-                        <p style="margin: 0;">${weatherTemp}°C</p>
-                    </div>
-                `;
-                document.querySelectorAll('[id^="weather-"]').forEach(element => {
-                    element.innerHTML = weatherHTML;
-                });
-            } else {
-                document.querySelectorAll('[id^="weather-"]').forEach(element => {
-                    element.innerHTML = 'No data available';
-                });
-            }
-        })
-        .catch(error => {
-            document.querySelectorAll('[id^="weather-"]').forEach(element => {
-                element.innerHTML = 'Error fetching weather data';
-            });
-            console.error('Error fetching weather data:', error);
-        });
-</script>
 <style>
     .rtl-content {
         direction: rtl;

@@ -3,49 +3,298 @@
 
 {% block content %}
 <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Container with small margins on the sides */
+    .container {
+        max-width: 95vw; /* Slight margin from the edges of the viewport */
+        margin: 0 auto;  /* Center the container */
+        padding: 0;
+        box-sizing: border-box;
+    }
+
     .banner-container {
-        margin-top: 20px; /* Adjust this value as needed */
-        position: relative; /* Ensures proper positioning */
-        width: 100%; /* Full width of its container */
-        height: 300px; /* Adjust height as needed */
-        overflow: hidden; /* Ensures image doesn't overflow */
+        margin-top: 20px;
+        position: relative;
+        width: 100%;
+        height: 450px;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .banner-image {
-        width: 100%; /* Full width within its container */
-        height: 100%; /* Full height within its container */
-        object-fit: cover; /* Ensures the image covers the container */
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
     }
+
+    .banner-container button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 10px;
+        font-size: 18px;
+        cursor: pointer;
+        border-radius: 50%;
+    }
+
+    .prev {
+        left: 10px;
+    }
+
+    .next {
+        right: 10px;
+    }
+
+    .rtl-text {
+        text-align: right;
+        direction: rtl;
+        color: #333;
+        font-size: 21px;
+        margin: 10px 0;
+    }
+
+    .main-title {
+        font-size: 42px;
+        font-weight: bold;
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    /* Flex container for weather and text side by side */
+    .flex-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 20px;
+        background-color: #ffffff;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        width: 100%;
+    }
+
+    /* Introductory text on the right without border */
+    .intro-container-text {
+        flex: 2;
+        padding-right: 20px;
+    }
+
+    /* Weather container on the left with rounded borders */
+    .weather-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 15px;
+        width: 200px;
+        text-align: center;
+        border-radius: 10px; /* Rounded corners */
+        border: 1px solid #ddd; /* Light gray border to make it distinct */
+        box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2); /* Slightly darker and bigger shadow */
+    }
+
+    .weather-header {
+        font-size: 18px;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+
+    .weather-temp {
+        font-size: 36px;
+        color: #00aaff;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .weather-icon img {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 10px;
+    }
+
+    .wind-details {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .wind-details div {
+        font-size: 14px;
+        color: #2c3e50;
+    }
+
+    .humidity {
+        font-size: 14px;
+        font-weight: bold;
+        margin-top: 10px;
+        color: #2c3e50;
+    }
+
+    .update-time {
+        font-size: 12px;
+        color: #aaa;
+        text-align: right;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .updates {
+        margin: 15px 0;
+        padding: 20px;
+        background-color: white;
+        width: 100%;
+        box-sizing: border-box;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .updates h2 {
+        font-weight: bold;
+        font-size: 24px;
+        color: #2c3e50;
+        text-align: right;
+        margin-bottom: 10px;
+    }
+
+    .update-box {
+        background-color: #eaf2f1;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 5px;
+        font-size: 18px;
+        color: #2c3e50;
+    }
+
+    .update-box p {
+        margin: 5px 0;
+    }
+
+    .update-box a {
+        color: #1e90ff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .update-box a:hover {
+        text-decoration: underline;
+    }
+
 </style>
 
-<main>
-    <h1 class="rtl-text">ברוכים הבאים</h1>
-    <p class="rtl-text">בשבילי חיפה הוא מיזם חברתי שמטרתו לעודד אנשים לצאת לטבע החיפאי, לחקור אותו לטייל בשבילים ובוואדיות של חיפה"</p>
-    <p class="rtl-text">באתר זה תוכלו לחפש מסלולים בטבע החיפאי שמעניינים אותכם ולהירשם לסיורים מודרכים שמאורגנים על ידי "בשבילי חיפה""</p>
-    <section class="banner-container">
-        <!-- Your banner section with updated styling -->
-        <img src="{{ url_for('static', filename='images/banner1.jpg') }}" alt="Banner 1" class="banner-image">
-        <button class="prev" onclick="prevSlide()">&#10094;</button>
-        <button class="next" onclick="nextSlide()">&#10095;</button>
-    </section>
+<main class="container">
+    <h1 class="main-title">ברוכים הבאים</h1>
 
-
-    <!-- Updates Section -->
-    <div class="updates">
-        <h2 class="rtl-text">עדכונים</h2>
-        <div class="update-box">
-            <p class="rtl-text">סיור לנחל לוטם יוצא ב- 17/04/2024, לפרטים ולרישום היכנסו לעמוד "רישום לסיורים"</p>
+    <!-- Flexbox container for weather and text side by side -->
+    <div class="flex-container">
+        <div id="weather-container" class="weather-container">
+            <div class="weather-header">
+            </div>
+            <div class="weather-temp">
+            </div>
+            <div class="weather-icon">
+            </div>
+            <div class="wind-details">
+                <div>בטעינה</div>
+            </div>
+            <div class="humidity">
+            </div>
+            <div class="update-time">
+                עודכן: 16:40
+            </div>
         </div>
-        <div class="update-box">
-            <p class="rtl-text">מוזמנים להאזין ל"שעה בשבוע" עם מובילת "בשבילי חיפה" ענבל חן ברגב. זמין בספוטיפיי -
-                <a href="https://open.spotify.com/episode/3Wl8QX29XqgUzXiwhyQzYM" target="_blank">link</a>
-                או ביוטיוב -
-                <a href="https://youtu.be/GAnCOt03LJU" target="_blank">link</a>
-            </p>
+
+        <!-- Introductory text on the right without border -->
+        <div class="intro-container-text">
+            <p class="rtl-text">בשבילי חיפה הוא מיזם חברתי שמטרתו לעודד אנשים לצאת לטבע החיפאי, לחקור אותו לטייל בשבילים ובוואדיות של חיפה"</p>
+            <p class="rtl-text">באתר זה תוכלו לחפש מסלולים בטבע החיפאי שמעניינים אתכם ולהירשם לסיורים מודרכים שמאורגנים על ידי "בשבילי חיפה"</p>
         </div>
     </div>
+
+    <!-- Banner Section -->
+    <section class="banner-container">
+        <img src="{{ url_for('static', filename='images/banner1.jpg') }}" alt="Banner" class="banner-image">
+    </section>
 </main>
 
 
-<script src="{{ url_for('static', filename='script.js') }}"></script>
+<script>
+    const apiKey = '9142ce21742a02f12fd544a3a3e34cdd'; // OpenWeatherMap API key
+    const city = 'Haifa';
+
+    function getWindDirection(deg) {
+        if (deg >= 0 && deg <= 22.5) return 'צפון';
+        else if (deg > 22.5 && deg <= 67.5) return 'צפון מזרח';
+        else if (deg > 67.5 && deg <= 112.5) return 'מזרח';
+        else if (deg > 112.5 && deg <= 157.5) return 'דרום מזרח';
+        else if (deg > 157.5 && deg <= 202.5) return 'דרום';
+        else if (deg > 202.5 && deg <= 247.5) return 'דרום מערב';
+        else if (deg > 247.5 && deg <= 292.5) return 'מערב';
+        else if (deg > 292.5 && deg <= 337.5) return 'צפון מערב';
+        else return 'צפון';
+    }
+
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=he`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data && data.weather && data.weather.length > 0) {
+                const weatherTemp = data.main.temp;
+                const humidity = data.main.humidity;
+                const windSpeed = data.wind.speed;
+                const weatherIcon = data.weather[0].icon;
+                const windDirection = getWindDirection(data.wind.deg);
+                const weatherDescription = data.weather[0].description;
+
+                const weatherHTML = `
+                    <div class="weather-header">
+                        חיפה
+                    </div>
+                    <div class="weather-temp">${weatherTemp}°C</div>
+                    <div class="weather-icon">
+                        <img src="http://openweathermap.org/img/wn/${weatherIcon}.png" alt="${weatherDescription}">
+                    </div>
+                    <div class="wind-details">
+                        <div>רוח: ${windSpeed} קמ"ש</div>
+                    </div>
+                    <div class="wind-details">
+                        <div> כיוון רוח: ${windDirection}</div>
+                    </div>
+                    <div class="humidity">
+                        לחות: ${humidity}%
+                    </div>
+                    <div class="update-time">
+                        עודכן: ${new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                `;
+                document.getElementById('weather-container').innerHTML = weatherHTML;
+            } else {
+                document.getElementById('weather-container').innerHTML = 'לא ניתן להשיג את נתוני מזג האוויר כרגע';
+            }
+        })
+        .catch(error => {
+            document.getElementById('weather-container').innerHTML = 'שגיאה בהבאת נתוני מזג האוויר';
+            console.error('Error fetching weather data:', error);
+        });
+</script>
 {% endblock %}
