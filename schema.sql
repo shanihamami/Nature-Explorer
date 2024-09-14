@@ -62,5 +62,25 @@ CREATE TABLE IF NOT EXISTS news (
     high_importance BOOLEAN NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS forum_topics (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS forum_comments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    topic_id INTEGER NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by TEXT NOT NULL,
+    parent_comment_id INTEGER,
+    FOREIGN KEY (topic_id) REFERENCES forum_topics(id),
+    FOREIGN KEY (parent_comment_id) REFERENCES forum_comments(id)
+);
+
+
 
 

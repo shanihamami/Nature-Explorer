@@ -145,3 +145,65 @@ for news in news_data:
 connection.commit()
 connection.close()
 
+
+connection = sqlite3.connect('registration.db')
+cur = connection.cursor()
+
+news_data = [
+    ('סיור לנחל לוטם יוצא ב- 15/10/2024, לפרטים ולרישום היכנסו לעמוד "סיורים מודרכים"', '2024-01-01', 1, 0),
+    ('מוזמנים להאזין ל"שעה בשבוע" עם מובילת "בשבילי חיפה" ענבל חן ברגב. זמין בספוטיפיי או ביוטיוב', '2024-02-01', 1, 0)
+]
+
+for news in news_data:
+    cur.execute("""
+    INSERT INTO news (title,  publish_date, active, high_importance)
+    VALUES (?, ?, ?, ?)
+    """, news)
+
+# Commit changes and close connection
+connection.commit()
+connection.close()
+
+# התחברות למסד הנתונים
+conn = sqlite3.connect('forum.db')
+c = conn.cursor()
+
+# יצירת טבלה עבור נושאים בפורום
+c.execute('''
+    CREATE TABLE IF NOT EXISTS forum_topics (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        content TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+''')
+
+# יצירת טבלה עבור תגובות בפורום
+c.execute('''
+    CREATE TABLE IF NOT EXISTS forum_comments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        topic_id INTEGER NOT NULL,
+        comment TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (topic_id) REFERENCES forum_topics (id)
+    )
+''')
+
+# הוספת נושא לדוגמה לטבלת הפורום
+c.execute('''
+    INSERT INTO forum_topics (title, content) 
+    VALUES 
+    ('טיול חדש בחיפה', 'שתפו את החוויות שלכם מהטיול בשמורות של חיפה.')
+''')
+
+# הוספת תגובה לדוגמה לנושא בפורום
+c.execute('''
+    INSERT INTO forum_comments (topic_id, comment)
+    VALUES 
+    (1, 'הטיול היה נהדר! נוף מדהים ואוויר צח.')
+''')
+
+# שמירת השינויים וסגירת החיבור למסד הנתונים
+conn.commit()
+conn.close()
+

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}פורום{% endblock %}
+
+{% block content %}
+<h1>פורום</h1>
+
+<a href="{{ url_for('new_topic') }}" class="btn btn-primary">צור נושא חדש</a>
+
+<div class="topics-list">
+    {% for topic in topics %}
+        <div class="topic-item">
+            <h2><a href="{{ url_for('topic', topic_id=topic['id']) }}">{{ topic['title'] }}</a></h2>
+            <p>נוצר על ידי {{ topic['created_by'] }} בתאריך {{ topic['created_at'] }}</p>
+            {% if admin %}
+                <form method="post" action="{{ url_for('delete_item', item_type='topic', item_id=topic['id']) }}">
+                    <button type="submit" class="btn btn-danger">מחק נושא</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

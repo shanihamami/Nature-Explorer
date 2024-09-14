@@ -10,6 +10,7 @@ ADMIN_PASSWORD = 'password'
 DATABASE_TRIALS = 'trails.db'
 DATABASE_REGISTRATION = 'registration.db'
 DATABASE_MESSAGES = 'messages.db'
+DATABASE_FORUM = 'forum.db'
 
 # Function to get database connection
 def get_db_trails():
@@ -28,6 +29,12 @@ def get_db_messages():
     if 'db_messages' not in g:
         g.db_messages = sqlite3.connect(DATABASE_MESSAGES)
     return g.db_messages
+
+def get_db_forum():
+    if 'db_messages' not in g:
+        g.db_forum = sqlite3.connect(DATABASE_FORUM)
+        g.db_forum.row_factory = sqlite3.Row
+    return g.db_forum
 
 # Close database connection at the end of request
 @app.teardown_appcontext
@@ -813,6 +820,72 @@ def api_get_news():
     news_titles = get_latest_news()
     return jsonify(news_titles)  # החזרת הנתונים כ-JSON
 
+
+# הצגת דף הפורום עם כל הנושאים
+@app.route('/forum')
+def forum():
+    db = get_db_forum()
+    topics = db.execute('SELECT * FROM forum_topics ORDER BY created_at DESC').fetchall()
+    return render_template('forum.html', topics=topics)
+
+
+# יצירת נושא חדש בפורום
+@app.route('/forum/new', methods=['GET', 'POST'])
+def new_topic():
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+        created_by = request.form['created_by']  # שם המשתמש שיוצר את הנושא
+
+        db = get_db_forum()
+        db.execute('INSERT INTO forum_topics (title, content, created_by) VALUES (?, ?, ?)',
+                   (title, content, created_by))
+        db.commit()
+        return redirect(url_for('forum'))
+
+    return render_template('new_topic.html')
+
+
+# הצגת נושא ותגובותיו
+@app.route('/forum/<int:topic_id>')
+def topic(topic_id):
+    db = get_db_forum()
+    topic = db.execute('SELECT * FROM forum_topics WHERE id = ?', (topic_id,)).fetchone()
+    comments = db.execute('SELECT * FROM forum_comments WHERE topic_id = ? ORDER BY created_at ASC',
+                          (topic_id,)).fetchall()
+    return render_template('topic.html', topic=topic, comments=comments)
+
+
+# הוספת תגובה לנושא
+@app.route('/forum/<int:topic_id>/comment', methods=['POST'])
+def add_comment(topic_id):
+    content = request.form['content']
+    created_by = request.form['created_by']  # שם המשתמש שמוסיף תגובה
+    parent_comment_id = request.form.get('parent_comment_id')  # במידה ומדובר בתגובה מקוננת
+
+    db = get_db_forum()
+    db.execute('INSERT INTO forum_comments (topic_id, content, created_by, parent_comment_id) VALUES (?, ?, ?, ?)',
+               (topic_id, content, created_by, parent_comment_id))
+    db.commit()
+    return redirect(url_for('topic', topic_id=topic_id))
+
+
+# מחיקת תגובה או נושא (admin בלבד)
+@app.route('/forum/delete/<string:item_type>/<int:item_id>', methods=['POST'])
+def delete_item(item_type, item_id):
+    if not session.get('logged_in'):  # בדיקת הרשאת admin
+        flash('אין לך הרשאה לבצע פעולה זו.', 'danger')
+        return redirect(url_for('forum'))
+
+    db = get_db_forum()
+    if item_type == 'topic':
+        db.execute('DELETE FROM forum_topics WHERE id = ?', (item_id,))
+        db.execute('DELETE FROM forum_comments WHERE topic_id = ?', (item_id,))
+    elif item_type == 'comment':
+        db.execute('DELETE FROM forum_comments WHERE id = ?', (item_id,))
+
+    db.commit()
+    return redirect(url_for('forum'))
 
 if __name__ == "__main__":
     from waitress import serve
