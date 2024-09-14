@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}ניהול עדכונים{% endblock %}
+
+{% block content %}
+<main>
+    <div class="text-right">
+        <a href="{{ url_for('admin_dashboard') }}" class="back-btn">חזרה ללוח בקרה</a>
+    </div>
+    <section id="manage-trails" class="rtl-content">
+        <h1>ניהול עדכונים</h1>
+        <div class="text-left">
+            <a href="{{ url_for('add_news') }}" class="add-trail-btn">הוסף עדכון חדש</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>תוכן</th>
+                    <th>תאריך פרסום</th>
+                    <th>פעיל</th>
+                    <th>חשיבות גבוהה</th>
+                    <th>פעולות</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for new in news %}
+                <tr>
+                    <td>{{ new.title }}</td>
+                    <td>{{ new.publish_date }}</td>
+                    <td>{{ new.active }}</td>
+                    <td>{{ new.high_importance }}</td>
+                    <td>
+                        <a href="{{ url_for('edit_news', news_id=new.id) }}">ערוך</a> |
+                        <form action="{{ url_for('delete_news', news_id=new.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" onclick="return confirm('האם אתה בטוח שברצונך למחוק עדכון זה?')" style="background:none;border:none;color:blue;cursor:pointer;text-decoration:underline;">מחק</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="pagination">
+            {% if page > 1 %}
+            <a href="{{ url_for('manage_news', page=page-1) }}">&laquo; עמוד קודם</a>
+            {% endif %}
+            {% if has_next %}
+            <a href="{{ url_for('manage_news', page=page+1) }}">עמוד הבא &raquo;</a>
+            {% endif %}
+        </div>
+    </section>
+</main>
+
+<style>
+    .rtl-content {
+        direction: rtl;
+        text-align: right;
+    }
+
+    #manage-trails {
+        padding: 20px;
+    }
+
+    .add-trail-btn {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding: 10px 15px;
+        background-color: #34A0A4;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .add-trail-btn:hover {
+        background-color: #168AAD;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+
+    .pagination {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .pagination a {
+        margin: 0 5px;
+        padding: 5px 10px;
+        text-decoration: none;
+        color: #000;
+        border: 1px solid #000;
+    }
+
+    .pagination a:hover {
+        background-color: #ddd;
+    }
+    .back-btn {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding: 10px 15px;
+        background-color: rgb(52, 160, 164);
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .back-btn:hover {
+        background-color: #168AAD;
+    }
+</style>
+{% endblock %}

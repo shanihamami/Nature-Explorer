@@ -571,6 +571,123 @@ def delete_tour(tour_id):
         return f"An error occurred while deleting data: {e}"
 
 
+@app.route('/manage_news')
+def manage_news():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    db = get_db_registration()
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
+    offset = (page - 1) * per_page
+
+    news = db.execute(
+        'SELECT * FROM news LIMIT ? OFFSET ?', (per_page, offset)
+    ).fetchall()
+    total_news = db.execute('SELECT COUNT(*) FROM news').fetchone()[0]
+    has_next = total_news > page * per_page
+
+    return render_template('manage_news.html', news=news, page=page, has_next=has_next)
+
+@app.route('/add_news', methods=['GET', 'POST'])
+def add_news():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    if request.method == 'POST':
+        title = request.form['title']
+        active = request.form['active']
+        high_importance = request.form['high_importance']
+        publish_date = datetime.today().date().strftime("%Y-%m-%d")
+
+        query = """
+        INSERT INTO news (title,  publish_date, active, high_importance)
+        VALUES (?, ?, ?, ?)
+        """
+        params = (title,  publish_date, active, high_importance)
+
+        try:
+            db = get_db_registration()
+            db.execute(query, params)
+            db.commit()
+            flash('העדכון נוסף בהצלחה!')
+            return redirect(url_for('manage_news'))
+        except sqlite3.Error as e:
+            print("SQLite error:", e)
+            return f"An error occurred while inserting data: {e}"
+
+    return render_template('add_news.html')
+
+
+
+def get_news(news_id):
+    conn = sqlite3.connect('registration.db')
+    conn.row_factory = sqlite3.Row  # תוצאה כמילון
+    cursor = conn.cursor()
+
+    # שליפת הסיור לפי ID
+    cursor.execute("SELECT * FROM news WHERE id = ?", (news_id,))
+    news = cursor.fetchone()
+    conn.close()
+
+    return news
+
+# פונקציה לעדכון סיור
+@app.route('/edit_news/<int:news_id>', methods=['GET', 'POST'])
+def edit_news(news_id):
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    conn = sqlite3.connect('registration.db')
+    cursor = conn.cursor()
+
+    if request.method == 'POST':
+        # שלב שני - קבלת הנתונים מהטופס
+        title = request.form['title']
+        active = request.form['active']
+        high_importance = request.form['high_importance']
+        print(news_id)
+        print(active)
+        print(high_importance)
+        print(title)  # זה יותאם לקידוד UTF-8
+
+        # שלב שלישי - עדכון הסיור ב-Database
+        cursor.execute("""
+            UPDATE news
+            SET title = ?, active = ?, high_importance = ?
+            WHERE id = ?
+        """, (title,  active, high_importance, news_id))
+
+        conn.commit()
+        conn.close()
+
+        flash('פרטי העדכון עודכנו בהצלחה!')
+        return redirect(url_for('manage_news'))
+
+    else:
+        # שלב רביעי - שליפת הסיור לפי ID והצגת הטופס עם הנתונים הקיימים
+        news = get_news(news_id)
+        conn.close()
+
+        if news is None:
+            flash('עדכון לא נמצא!')
+            return redirect(url_for('home'))
+
+        return render_template('edit_news.html', news=news)
+
+
+@app.route('/delete_news/<int:news_id>', methods=['POST'])
+def delete_news(news_id):
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    db = get_db_registration()
+    try:
+        db.execute('DELETE FROM news WHERE id = ?', (news_id,))
+        db.commit()
+        flash('העדכון נמחק בהצלחה!')
+        return redirect(url_for('manage_news'))
+    except sqlite3.Error as e:
+        print("SQLite error:", e)
+        return f"An error occurred while deleting data: {e}"
+
+
 
 @app.route('/guided_tours')
 def guided_tours():
@@ -676,8 +793,8 @@ def get_latest_news():
     cursor.execute('''
         SELECT title
         FROM news
-        ORDER BY publish_date DESC
-        LIMIT 5
+        WHERE active = 1
+        ORDER BY high_importance DESC, publish_date DESC;
     ''')
     latest_news = cursor.fetchall()
 
