@@ -887,6 +887,5 @@ def delete_item(item_type, item_id):
     db.commit()
     return redirect(url_for('forum'))
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
 
