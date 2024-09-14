@@ -3,38 +3,40 @@
 {% block title %}נושא: {{ topic['title'] }}{% endblock %}
 
 {% block content %}
-<h1>{{ topic['title'] }}</h1>
-<p>נכתב על ידי {{ topic['created_by'] }} בתאריך {{ topic['created_at'] }}</p>
-<p>{{ topic['content'] }}</p>
+<div style="direction: rtl; text-align: right;">
+    <h1>{{ topic['title'] }}</h1>
+    <p>נכתב על ידי {{ topic['created_by'] }} בתאריך {{ topic['created_at'][8:10] + "/" + topic['created_at'][5:7] + "/" + topic['created_at'][0:4] }}</p>
+    <p>{{ topic['content'] }}</p>
 
-<hr>
+    <hr>
 
-<h2>תגובות</h2>
-<div class="comments">
-    {% for comment in comments %}
-        <div class="comment">
-            <p><strong>{{ comment['created_by'] }}:</strong> {{ comment['content'] }} ({{ comment['created_at'] }})</p>
-            {% if admin %}
-                <form method="post" action="{{ url_for('delete_item', item_type='comment', item_id=comment['id']) }}">
-                    <button type="submit" class="btn btn-danger">מחק תגובה</button>
-                </form>
-            {% endif %}
+    <h2>תגובות</h2>
+    <div class="comments">
+        {% for comment in comments %}
+            <div class="comment">
+                <p><strong>{{ comment['created_by'] }}:</strong> {{ comment['content'] }} ({{ comment['created_at'][8:10] + "/" + comment['created_at'][5:7] + "/" + comment['created_at'][0:4]}})</p>
+                {% if admin %}
+                    <form method="post" action="{{ url_for('delete_item', item_type='comment', item_id=comment['id']) }}">
+                        <button type="submit" class="btn btn-danger">מחק תגובה</button>
+                    </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <hr>
+
+    <h3>הוסף תגובה</h3>
+    <form method="post" action="{{ url_for('add_comment', topic_id=topic['id']) }}">
+        <div class="form-group">
+            <label for="created_by">שם:</label>
+            <input type="text" id="created_by" name="created_by" class="form-control" required>
         </div>
-    {% endfor %}
+        <div class="form-group">
+            <label for="content">תוכן התגובה:</label>
+            <textarea id="content" name="content" class="form-control" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">הוסף תגובה</button>
+    </form>
 </div>
-
-<hr>
-
-<h3>הוסף תגובה</h3>
-<form method="post" action="{{ url_for('add_comment', topic_id=topic['id']) }}">
-    <div class="form-group">
-        <label for="created_by">שם:</label>
-        <input type="text" id="created_by" name="created_by" class="form-control" required>
-    </div>
-    <div class="form-group">
-        <label for="content">תוכן התגובה:</label>
-        <textarea id="content" name="content" class="form-control" required></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">הוסף תגובה</button>
-</form>
 {% endblock %}

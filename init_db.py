@@ -168,13 +168,16 @@ connection.close()
 conn = sqlite3.connect('forum.db')
 c = conn.cursor()
 
+
+
 # יצירת טבלה עבור נושאים בפורום
 c.execute('''
     CREATE TABLE IF NOT EXISTS forum_topics (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         content TEXT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        created_by TEXT NOT NULL
     )
 ''')
 
@@ -183,24 +186,27 @@ c.execute('''
     CREATE TABLE IF NOT EXISTS forum_comments (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         topic_id INTEGER NOT NULL,
-        comment TEXT NOT NULL,
+        content TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (topic_id) REFERENCES forum_topics (id)
+        created_by TEXT NOT NULL,
+        parent_comment_id INTEGER,
+        FOREIGN KEY (topic_id) REFERENCES forum_topics(id),
+        FOREIGN KEY (parent_comment_id) REFERENCES forum_comments(id)
     )
 ''')
 
 # הוספת נושא לדוגמה לטבלת הפורום
 c.execute('''
-    INSERT INTO forum_topics (title, content) 
+    INSERT INTO forum_topics (title, content, created_by) 
     VALUES 
-    ('טיול חדש בחיפה', 'שתפו את החוויות שלכם מהטיול בשמורות של חיפה.')
+    ('סיור לנחל לוטם ב 17.04', 'נהנתי מאוד בסיור', 'משתתף אנונימי')
 ''')
 
 # הוספת תגובה לדוגמה לנושא בפורום
 c.execute('''
-    INSERT INTO forum_comments (topic_id, comment)
+    INSERT INTO forum_comments (topic_id, content, created_by)
     VALUES 
-    (1, 'הטיול היה נהדר! נוף מדהים ואוויר צח.')
+    (1, 'הטיול היה נהדר! נוף מדהים ואוויר צח.', 'ישראל ישראלי')
 ''')
 
 # שמירת השינויים וסגירת החיבור למסד הנתונים
