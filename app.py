@@ -594,8 +594,8 @@ def add_news():
         return redirect(url_for('login'))
     if request.method == 'POST':
         title = request.form['title']
-        active = request.form['active']
-        high_importance = request.form['high_importance']
+        active = 1 if 'active' in request.form else 0
+        high_importance = 1 if 'high_importance' in request.form else 0
         publish_date = datetime.today().date().strftime("%Y-%m-%d")
 
         query = """
@@ -641,12 +641,8 @@ def edit_news(news_id):
     if request.method == 'POST':
         # שלב שני - קבלת הנתונים מהטופס
         title = request.form['title']
-        active = request.form['active']
-        high_importance = request.form['high_importance']
-        print(news_id)
-        print(active)
-        print(high_importance)
-        print(title)  # זה יותאם לקידוד UTF-8
+        active = 1 if 'active' in request.form else 0
+        high_importance = 1 if 'high_importance' in request.form else 0
 
         # שלב שלישי - עדכון הסיור ב-Database
         cursor.execute("""
