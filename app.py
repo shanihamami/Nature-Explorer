@@ -825,8 +825,15 @@ def api_get_news():
 @app.route('/forum')
 def forum():
     db = get_db_forum()
-    topics = db.execute('SELECT * FROM forum_topics ORDER BY created_at DESC').fetchall()
+    topics = db.execute('''
+        SELECT forum_topics.*, COUNT(forum_comments.id) AS comment_count
+        FROM forum_topics
+        LEFT JOIN forum_comments ON forum_topics.id = forum_comments.topic_id
+        GROUP BY forum_topics.id
+        ORDER BY forum_topics.created_at DESC
+    ''').fetchall()
     return render_template('forum.html', topics=topics, admin=session.get('logged_in'))
+
 
 
 # יצירת נושא חדש בפורום
@@ -854,69 +861,30 @@ def topic(topic_id):
     # שליפת הנושא
     topic = db.execute('SELECT * FROM forum_topics WHERE id = ?', (topic_id,)).fetchone()
 
-    # שליפת התגובות הראשיות
-    comments = db.execute('SELECT * FROM forum_comments WHERE topic_id = ? AND parent_comment_id IS NULL', (topic_id,)).fetchall()
-
-    # פונקציה לעיבוד תגובות מקוננות
-    def build_comment_tree(comments):
-        # יצירת מילון של תגובות עם מפתח ה-ID
-        comment_dict = {
-            comment['id']: {
-                'id': comment['id'],
-                'parent_comment_id': comment['parent_comment_id'],
-                'topic_id': comment['topic_id'],
-                'created_by': comment['created_by'],
-                'content': comment['content'],
-                'created_at': comment['created_at'],
-                'replies': []
-            } for comment in comments
-        }
-
-        # יצירת רשימה שתכיל את התגובות הראשיות (root comments)
-        root_comments = []
-
-        # הקצאת התגובות למקום המתאים שלהן
-        for comment in comments:
-            comment_id = comment['id']
-            parent_id = comment['parent_comment_id']
-
-            # אם התגובה היא תגובה ראשית
-            if parent_id is None:
-                root_comments.append(comment_dict[comment_id])
-            else:
-                # מציאת התגובה ההורית והוספת התגובה הנוכחית לרשימת התגובות המקוננות שלה
-                parent_comment = comment_dict.get(parent_id)
-                if parent_comment:
-                    parent_comment['replies'].append(comment_dict[comment_id])
-
-        return root_comments
-
-    comments_tree = build_comment_tree(comments)
+    # שליפת התגובות
+    comments = db.execute('SELECT * FROM forum_comments WHERE topic_id = ? ', (topic_id,)).fetchall()
 
     # ספירת כל התגובות
-    total_comments = len(db.execute('SELECT * FROM forum_comments WHERE topic_id = ?', (topic_id,)).fetchall())
+    total_comments = len(comments)
 
-    return render_template('topic.html', topic=topic, comments=comments_tree, total_comments=total_comments, admin=session.get('logged_in'))
-
-
+    return render_template('topic.html', topic=topic, comments=comments, total_comments=total_comments, admin=session.get('logged_in'))
 
 # הוספת תגובה לנושא
 @app.route('/forum/<int:topic_id>/comment', methods=['POST'])
 def add_comment(topic_id):
     content = request.form['content']
-    created_by = request.form['created_by']  # שם המשתמש שמוסיף תגובה
-    parent_comment_id = request.form.get('parent_comment_id')  # במידה ומדובר בתגובה מקוננת
+    created_by = request.form['created_by']
 
     db = get_db_forum()
-    db.execute('INSERT INTO forum_comments (topic_id, content, created_by, parent_comment_id) VALUES (?, ?, ?, ?)',
-               (topic_id, content, created_by, parent_comment_id))
+    db.execute('INSERT INTO forum_comments (topic_id, content, created_by) VALUES (?, ?, ?)',
+               (topic_id, content, created_by))
     db.commit()
     return redirect(url_for('topic', topic_id=topic_id))
 
 
 # מחיקת תגובה או נושא (admin בלבד)
-@app.route('/forum/delete/<string:item_type>/<int:item_id>', methods=['POST'])
-def delete_item(item_type, item_id):
+@app.route('/forum/delete/<string:item_type>/<int:item_id>/<int:topic_id>', methods=['POST'])
+def delete_item(item_type, item_id, topic_id):
     if not session.get('logged_in'):  # בדיקת הרשאת admin
         flash('אין לך הרשאה לבצע פעולה זו.', 'danger')
         return redirect(url_for('forum'))
@@ -925,11 +893,16 @@ def delete_item(item_type, item_id):
     if item_type == 'topic':
         db.execute('DELETE FROM forum_topics WHERE id = ?', (item_id,))
         db.execute('DELETE FROM forum_comments WHERE topic_id = ?', (item_id,))
+        db.commit()
+        return redirect(url_for('forum'))
     elif item_type == 'comment':
         db.execute('DELETE FROM forum_comments WHERE id = ?', (item_id,))
+        db.commit()
+        return redirect(url_for('topic', topic_id=topic_id))
 
-    db.commit()
-    return redirect(url_for('forum'))
+
+
+
 
 
 

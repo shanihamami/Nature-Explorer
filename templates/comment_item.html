@@ -3,8 +3,8 @@
 {% endif %}
 
 <div style="direction: rtl; text-align: right;">
-    <!-- הצגת התגובה הראשית בתוך container -->
-    <div class="comment-container" style="margin-left: {{ level * 20 }}px; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px;">
+    <!-- הצגת התגובה הראשית -->
+    <div class="comment-container" style="margin-left: {{ level * 20 }}px;">
         <p><strong>{{ comment['created_by'] }}:</strong> {{ comment['content'] }} ({{ comment['created_at'][8:10] + "/" + comment['created_at'][5:7] + "/" + comment['created_at'][0:4] }})</p>
 
         {% if admin %}
