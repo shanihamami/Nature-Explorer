@@ -3,21 +3,41 @@
 {% block title %}פורום{% endblock %}
 
 {% block content %}
-<h1>פורום</h1>
+<div style="direction: rtl; text-align: right;">
+    <h1>פורום</h1>
 
-<a href="{{ url_for('new_topic') }}" class="btn btn-primary">צור נושא חדש</a>
+    <a href="{{ url_for('new_topic') }}" class="btn btn-primary">צור דיון חדש</a>
 
-<div class="topics-list">
-    {% for topic in topics %}
-        <div class="topic-item">
-            <h2><a href="{{ url_for('topic', topic_id=topic['id']) }}">{{ topic['title'] }}</a></h2>
-            <p>נוצר על ידי {{ topic['created_by'] }} בתאריך {{ topic['created_at'] }}</p>
-            {% if admin %}
-                <form method="post" action="{{ url_for('delete_item', item_type='topic', item_id=topic['id']) }}">
-                    <button type="submit" class="btn btn-danger">מחק נושא</button>
-                </form>
-            {% endif %}
-        </div>
-    {% endfor %}
+    <div class="topics-list">
+        {% for topic in topics %}
+            <div class="container topic-item" style="padding: 15px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 20px;">
+                <h2><a href="{{ url_for('topic', topic_id=topic['id']) }}">{{ topic['title'] }}</a></h2>
+                <h6>{{ topic['content'] }}</h6>
+                <p>נוצר על ידי {{ topic['created_by'] }} בתאריך {{ topic['created_at'][8:10] + "/" + topic['created_at'][5:7] + "/" + topic['created_at'][0:4] }}</p>
+                <p>בדיון זה זה נכתבו {{ topic['comment_count'] }} תגובות</p>
+                {% if admin %}
+                    <form method="post" action="{{ url_for('delete_item', item_type='topic', item_id=topic['id'], topic_id=topic['id']) }}">
+                        <button type="submit" class="btn btn-danger">מחק דיון</button>
+                    </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
 </div>
+<style>
+        .container topic-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 20px;
+        background-color: #ffffff;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        width: 100%;
+        }
+</style>
 {% endblock %}
+
+
