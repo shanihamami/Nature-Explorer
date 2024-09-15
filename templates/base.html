@@ -101,6 +101,53 @@
       marquee {
         font-size: 20px;
       }
+            /* Floating Sidebar Menu */
+      .sidebar-menu {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: 50%; /* Adjust width to cover half the page */
+        background-color: rgba(52, 58, 64, 0.95); /* Slight transparency */
+        padding: 2rem;
+        z-index: 1050; /* High z-index to appear above everything */
+        transition: transform 0.3s ease;
+        transform: translateX(100%); /* Initially hidden off-screen */
+        box-shadow: -2px 0 5px rgba(0,0,0,0.5); /* Add shadow for depth */
+      }
+
+      .sidebar-menu.active {
+        transform: translateX(0); /* Slide in when active */
+      }
+
+      .sidebar-menu .close-menu {
+        font-size: 24px;
+        color: white;
+        float: right;
+        cursor: pointer;
+      }
+
+      .sidebar-menu .nav-link {
+        color: white;
+        font-size: 18px;
+        margin: 15px 0;
+      }
+
+      /* Overlay when the menu opens */
+      .menu-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1040; /* Below the sidebar menu */
+      }
+
+      .menu-overlay.active {
+        display: block; /* Show overlay when active */
+      }
     </style>
 </head>
 <body class="d-flex flex-column">
@@ -108,12 +155,12 @@
       <a class="navbar-brand" href="/">
         <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Nature Explorer Logo">
       </a>
-      <button
+   <button
         class="navbar-toggler"
         type="button"
-        data-toggle="collapse"
-        data-target="#navbar"
-      >
+        id="menu-toggler"
+        aria-label="Toggle navigation"
+   >
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbar">
@@ -130,6 +177,42 @@
       </div>
     </nav>
 
+        <!-- Sidebar Menu (for mobile) -->
+    <div class="sidebar-menu" id="sidebarMenu">
+      <span class="close-menu" id="closeMenu">&times;</span>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/">עמוד הבית</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/search">חיפוש מסלולים</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/maps">מפה</a>
+        </li>
+          <li class="nav-item">
+          <a class="nav-link" href="/guided_tours">סיורים מודרכים</a>
+        </li>
+          <li class="nav-item">
+          <a class="nav-link" href="/recommendations">המלצות</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/forum">דיונים</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">אודות</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact">צור קשר</a>
+        </li>
+
+
+
+
+      </ul>
+    </div>
+<!-- Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
     <!-- News Ticker -->
     <div class="news-ticker" style="direction: rtl; text-align: right;">
         <marquee behavior="scroll" direction="right" id="news-ticker">
@@ -182,6 +265,32 @@
                 console.error('Error fetching news:', error);
                 document.getElementById('news-ticker').innerHTML = 'Error loading news';
             });
+    </script>
+
+        <!-- Sidebar Menu Script -->
+    <script>
+      const menuToggler = document.getElementById('menu-toggler');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const closeMenu = document.getElementById('closeMenu');
+      const menuOverlay = document.getElementById('menuOverlay');
+
+      // Open sidebar and overlay
+      menuToggler.addEventListener('click', () => {
+        sidebarMenu.classList.add('active');
+        menuOverlay.classList.add('active');
+      });
+
+      // Close sidebar and overlay
+      closeMenu.addEventListener('click', () => {
+        sidebarMenu.classList.remove('active');
+        menuOverlay.classList.remove('active');
+      });
+
+      // Close sidebar and overlay when clicking on the overlay
+      menuOverlay.addEventListener('click', () => {
+        sidebarMenu.classList.remove('active');
+        menuOverlay.classList.remove('active');
+      });
     </script>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

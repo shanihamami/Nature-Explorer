@@ -959,5 +959,8 @@ def delete_item(item_type, item_id, topic_id):
 
 
 
+if __name__ == '__main__':
+    app.run(debug=True)
+
 
 
