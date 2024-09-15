@@ -149,6 +149,21 @@ connection.close()
 connection = sqlite3.connect('registration.db')
 cur = connection.cursor()
 
+cur.execute('''
+    DROP TABLE IF EXISTS news;
+''')
+
+cur.execute('''
+    CREATE TABLE IF NOT EXISTS news (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    publish_date TEXT NOT NULL,
+    active BOOLEAN NOT NULL,
+    high_importance BOOLEAN NOT NULL
+);
+''')
+
+
 news_data = [
     ('סיור לנחל לוטם יוצא ב- 15/10/2024, לפרטים ולרישום היכנסו לעמוד "סיורים מודרכים"', '2024-01-01', 1, 0),
     ('מוזמנים להאזין ל"שעה בשבוע" עם מובילת "בשבילי חיפה" ענבל חן ברגב. זמין בספוטיפיי או ביוטיוב', '2024-02-01', 1, 0)
@@ -167,6 +182,14 @@ connection.close()
 # התחברות למסד הנתונים
 conn = sqlite3.connect('forum.db')
 c = conn.cursor()
+
+c.execute('''
+    DROP TABLE IF EXISTS forum_topics;
+''')
+
+c.execute('''
+    DROP TABLE IF EXISTS forum_comments;
+''')
 
 
 
