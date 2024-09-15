@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}נושא: {{ topic['title'] }}{% endblock %}
+{% block title %}דיון: {{ topic['title'] }}{% endblock %}
 
 {% block content %}
 <div style="direction: rtl; text-align: right;">
@@ -10,7 +10,7 @@
     <h1>{{ topic['title'] }}</h1>
     <h6>{{ topic['content'] }}</h6>
     <p>נכתב על ידי {{ topic['created_by'] }} בתאריך {{ topic['created_at'][8:10] + "/" + topic['created_at'][5:7] + "/" + topic['created_at'][0:4] }}</p>
-    <p>לנושא זה נכתבו {{ comments|length }} תגובות</p>
+    <p>בדיון זה נכתבו {{ comments|length }} תגובות</p>
 
     <hr>
 
@@ -19,7 +19,7 @@
         {% for comment in comments %}
             <!-- עטיפת כל תגובה בתוך container -->
             <div class="container comment" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
-                <p><strong>{{ comment['created_by'] }}:</strong> {{ comment['content'] }} ({{ comment['created_at'][8:10] + "/" + comment['created_at'][5:7] + "/" + comment['created_at'][0:4] }})</p>
+                <p><strong>{{ loop.index }}.{{ comment['created_by'] }}:</strong> {{ comment['content'] }} ({{ comment['created_at'][8:10] + "/" + comment['created_at'][5:7] + "/" + comment['created_at'][0:4] }})</p>
 
                 {% if admin %}
                     <form method="post" action="{{ url_for('delete_item', item_type='comment', item_id=comment['id'], topic_id=comment['topic_id']) }}">
