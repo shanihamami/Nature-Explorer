@@ -2,6 +2,9 @@ from flask import Flask, request, render_template, g, jsonify, redirect, url_for
 from datetime import datetime
 import sqlite3
 import urllib.parse
+import os
+from werkzeug.utils import secure_filename
+from unidecode import unidecode
 
 app = Flask(__name__)
 app.secret_key = 'nature_explorer'
@@ -344,6 +347,18 @@ def view_messages():
     messages = cur.fetchall()
     return render_template('view_messages.html', messages=messages)
 
+
+# תיקיית העלאת תמונות
+UPLOAD_FOLDER = 'static\images'
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'jfif'}
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 @app.route('/add_trail', methods=['GET', 'POST'])
 def add_trail():
     if not session.get('logged_in'):
@@ -366,6 +381,7 @@ def add_trail():
         circular = 1 if 'circular' in request.form else 0
         suitable_for_disabled = 1 if 'suitable_for_disabled' in request.form else 0
 
+        # שמירת המסלול במסד הנתונים
         query = """
         INSERT INTO trails (main_location, trail_name, short_description, start_point, end_point, lengthKM, difficulty, season, point_of_interest, interactive_activity, duration, possibility_of_entering_water, suitable_for_families, suitable_for_bicycles, circular, suitable_for_disabled)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -374,14 +390,33 @@ def add_trail():
 
         try:
             db = get_db_trails()
-            db.execute(query, params)
+            cursor = db.execute(query, params)
+            trail_id = cursor.lastrowid
             db.commit()
+
+            # טיפול בתמונות שהועלו
+            if 'trail_images' in request.files:
+                files = request.files.getlist('trail_images')
+                for idx, file in enumerate(files):
+                    if file and allowed_file(file.filename):
+                        # יצירת שם קובץ ייחודי לפי שם השביל והאינדקס
+                        extension = file.filename.rsplit('.', 1)[1].lower()  # קבלת הסיומת של הקובץ
+                        filename = f"{trail_id}_{idx + 1}.{extension}"  # שם ייחודי לכל קובץ
+                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                        image_url = filename
+                        print(f"File saved: {filename}")
+
+                        # שמירת התמונה במסד הנתונים
+                        db.execute("INSERT INTO trail_images (trail_id, image_url) VALUES (?, ?)", (trail_id, image_url))
+                        db.commit()
+
             flash('השביל נוסף בהצלחה!')
             return redirect(url_for('manage_trails'))
         except sqlite3.Error as e:
             print("SQLite error:", e)
             return f"An error occurred while inserting data: {e}"
     return render_template('add_trail.html')
+
 
 @app.route('/edit_trail/<int:trail_id>', methods=['GET', 'POST'])
 def edit_trail(trail_id):
@@ -406,6 +441,23 @@ def edit_trail(trail_id):
         circular = 1 if 'circular' in request.form else 0
         suitable_for_disabled = 1 if 'suitable_for_disabled' in request.form else 0
 
+        # מחיקת תמונות שנבחרו למחיקה
+        delete_images = request.form.getlist('delete_images')
+        if delete_images:
+            query_delete_images = "DELETE FROM images WHERE id IN ({seq})".format(seq=','.join(['?']*len(delete_images)))
+            db.execute(query_delete_images, delete_images)
+            db.commit()
+
+        # העלאת תמונות חדשות
+        if 'new_images' in request.files:
+            new_images = request.files.getlist('new_images')
+            for image in new_images:
+                if image and allowed_file(image.filename):
+                    filename = secure_filename(image.filename)
+                    image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    db.execute('INSERT INTO trail_images (trail_id, image_url) VALUES (?, ?)', (trail_id, filename))
+                    db.commit()
+
         query = """
         UPDATE trails
         SET main_location = ?, trail_name = ?, short_description = ?, start_point = ?, end_point = ?, lengthKM = ?, difficulty = ?, season = ?, point_of_interest = ?, interactive_activity = ?, duration = ?, possibility_of_entering_water = ?, suitable_for_families = ?, suitable_for_bicycles = ?, circular = ?, suitable_for_disabled = ?
@@ -423,7 +475,10 @@ def edit_trail(trail_id):
             return f"An error occurred while updating data: {e}"
 
     trail = db.execute('SELECT * FROM trails WHERE id = ?', (trail_id,)).fetchone()
-    return render_template('edit_trail.html', trail=trail)
+    images = db.execute('SELECT * FROM trail_images WHERE trail_id = ?', (trail_id,)).fetchall()  # שליפת תמונות
+    for image in images:
+        print(dict(image))  # המרת התוצאה למילון והדפסתה
+    return render_template('edit_trail.html', trail=trail, images=images, loc=app.config['UPLOAD_FOLDER'])
 
 @app.route('/delete_trail/<int:trail_id>', methods=['POST'])
 def delete_trail(trail_id):
