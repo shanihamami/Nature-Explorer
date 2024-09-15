@@ -5,22 +5,19 @@
 {% block content %}
 <div style="direction: rtl; text-align: right;">
     <h1>{{ topic['title'] }}</h1>
-    <p>נכתב על ידי {{ topic['created_by'] }} בתאריך {{ topic['created_at'][8:10] + "/" + topic['created_at'][5:7] + "/" + topic['created_at'][0:4] }}</p>
+    <p>נכתב על ידי {{ topic['created_by'] }} בתאריך {{ topic['created_at'][8:10] }}/{{ topic['created_at'][5:7] }}/{{ topic['created_at'][0:4] }}</p>
     <p>{{ topic['content'] }}</p>
+
+    <!-- הצגת מספר התגובות -->
+    <p>לנושא זה נכתבו {{ total_comments }} תגובות</p>
 
     <hr>
 
     <h2>תגובות</h2>
     <div class="comments">
         {% for comment in comments %}
-            <div class="comment">
-                <p><strong>{{ comment['created_by'] }}:</strong> {{ comment['content'] }} ({{ comment['created_at'][8:10] + "/" + comment['created_at'][5:7] + "/" + comment['created_at'][0:4]}})</p>
-                {% if admin %}
-                    <form method="post" action="{{ url_for('delete_item', item_type='comment', item_id=comment['id']) }}">
-                        <button type="submit" class="btn btn-danger">מחק תגובה</button>
-                    </form>
-                {% endif %}
-            </div>
+            {% set level = 0 %}
+            {% include 'comment_item.html' %}
         {% endfor %}
     </div>
 
@@ -40,3 +37,10 @@
     </form>
 </div>
 {% endblock %}
+
+
+
+
+
+
+

@@ -826,7 +826,7 @@ def api_get_news():
 def forum():
     db = get_db_forum()
     topics = db.execute('SELECT * FROM forum_topics ORDER BY created_at DESC').fetchall()
-    return render_template('forum.html', topics=topics)
+    return render_template('forum.html', topics=topics, admin=session.get('logged_in'))
 
 
 # יצירת נושא חדש בפורום
@@ -847,13 +847,57 @@ def new_topic():
 
 
 # הצגת נושא ותגובותיו
-@app.route('/forum/<int:topic_id>')
+@app.route('/forum/<int:topic_id>', methods=['GET'])
 def topic(topic_id):
     db = get_db_forum()
+
+    # שליפת הנושא
     topic = db.execute('SELECT * FROM forum_topics WHERE id = ?', (topic_id,)).fetchone()
-    comments = db.execute('SELECT * FROM forum_comments WHERE topic_id = ? ORDER BY created_at ASC',
-                          (topic_id,)).fetchall()
-    return render_template('topic.html', topic=topic, comments=comments)
+
+    # שליפת התגובות הראשיות
+    comments = db.execute('SELECT * FROM forum_comments WHERE topic_id = ? AND parent_comment_id IS NULL', (topic_id,)).fetchall()
+
+    # פונקציה לעיבוד תגובות מקוננות
+    def build_comment_tree(comments):
+        # יצירת מילון של תגובות עם מפתח ה-ID
+        comment_dict = {
+            comment['id']: {
+                'id': comment['id'],
+                'parent_comment_id': comment['parent_comment_id'],
+                'topic_id': comment['topic_id'],
+                'created_by': comment['created_by'],
+                'content': comment['content'],
+                'created_at': comment['created_at'],
+                'replies': []
+            } for comment in comments
+        }
+
+        # יצירת רשימה שתכיל את התגובות הראשיות (root comments)
+        root_comments = []
+
+        # הקצאת התגובות למקום המתאים שלהן
+        for comment in comments:
+            comment_id = comment['id']
+            parent_id = comment['parent_comment_id']
+
+            # אם התגובה היא תגובה ראשית
+            if parent_id is None:
+                root_comments.append(comment_dict[comment_id])
+            else:
+                # מציאת התגובה ההורית והוספת התגובה הנוכחית לרשימת התגובות המקוננות שלה
+                parent_comment = comment_dict.get(parent_id)
+                if parent_comment:
+                    parent_comment['replies'].append(comment_dict[comment_id])
+
+        return root_comments
+
+    comments_tree = build_comment_tree(comments)
+
+    # ספירת כל התגובות
+    total_comments = len(db.execute('SELECT * FROM forum_comments WHERE topic_id = ?', (topic_id,)).fetchall())
+
+    return render_template('topic.html', topic=topic, comments=comments_tree, total_comments=total_comments, admin=session.get('logged_in'))
+
 
 
 # הוספת תגובה לנושא

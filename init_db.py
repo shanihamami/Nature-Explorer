@@ -198,7 +198,7 @@ c.execute('''
     CREATE TABLE IF NOT EXISTS forum_topics (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
-        content TEXT NOT NULL,
+        content TEXT ,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         created_by TEXT NOT NULL
     )
