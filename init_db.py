@@ -146,12 +146,9 @@ connection.commit()
 connection.close()
 
 
+
 connection = sqlite3.connect('registration.db')
 cur = connection.cursor()
-
-cur.execute('''
-    DROP TABLE IF EXISTS news;
-''')
 
 cur.execute('''
     CREATE TABLE IF NOT EXISTS news (
@@ -162,6 +159,8 @@ cur.execute('''
     high_importance BOOLEAN NOT NULL
 );
 ''')
+
+
 
 
 news_data = [
@@ -178,6 +177,9 @@ for news in news_data:
 # Commit changes and close connection
 connection.commit()
 connection.close()
+
+
+
 
 # התחברות למסד הנתונים
 conn = sqlite3.connect('forum.db')
