@@ -16,7 +16,12 @@
                 <th>אורך (ק"מ)</th>
                 <th>רמת קושי</th>
                 <th>עונה</th>
+                <th>משך זמן</th>
                 <th>אטרקציות</th>
+                <th>מתאים למשפחות</th>
+                <th>אפשרות כניסה למים</th>
+                <th>מתאים לאופניים</th>
+                <th>נגיש</th>
                 <th>סיורים עתידיים</th>
             </tr>
         </thead>
@@ -29,7 +34,12 @@
                 <td>{{ result.lengthKM }}</td>
                 <td>{{ result.difficulty }}</td>
                 <td>{{ result.season }}</td>
+                <td>{{ result.duration }}</td>
                 <td>{{ result.interactive_activity }}</td>
+                <td>{{ 'כן' if result.suitable_for_families == 1 else 'לא' }}</td>
+                <td>{{ 'כן' if result.possibility_of_entering_water == 1 else 'לא' }}</td>
+                <td>{{ 'כן' if result.suitable_for_bicycles == 1 else 'לא' }}</td>
+                <td>{{ 'כן' if result.suitable_for_disabled == 1 else 'לא' }}</td>
                 <td>
                     {% set future_tours_for_trail = future_tours.get(result.trail_name, []) %}
                     {% if future_tours_for_trail %}
