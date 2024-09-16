@@ -324,7 +324,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
-    return redirect(url_for('login'))
+    return redirect(url_for('home'))
 
 @app.route('/view-registrations')
 def view_registrations():
