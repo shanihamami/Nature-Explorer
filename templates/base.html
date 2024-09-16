@@ -24,7 +24,8 @@
 
       /* Logo in navbar */
       .navbar-brand img {
-        max-height: 40px; /* Adjust logo size */
+        margin-top: 10px;
+        max-height: 50px; /* Adjust logo size */
         margin-right: 10px; /* Space between logo and text */
       }
 
@@ -148,6 +149,16 @@
       .menu-overlay.active {
         display: block; /* Show overlay when active */
       }
+
+      .social-links h2 {
+        text-decoration: none;
+        color: #fff;
+        font-size: 18px;
+    }
+
+    .social-links i {
+        margin-left: 8px; /* Space between icon and text */
+    }
     </style>
 </head>
 <body class="d-flex flex-column">
@@ -167,7 +178,7 @@
         <div class="navbar-nav ml-auto"> <!-- Adjusted for right alignment -->
             <a class="nav-item nav-link" id="contact" href="/contact" style="font-size: 16px; color: #fff;">צור קשר</a>
             <a class="nav-item nav-link" id="about" href="/about" style="font-size: 16px; color: #fff;">אודות</a>
-            <a class="nav-item nav-link" id="about" href="/forum" style="font-size: 16px; color: #fff;">דיונים</a>
+            <a class="nav-item nav-link" id="about" href="/forum" style="font-size: 16px; color: #fff;">פורום</a>
             <a class="nav-item nav-link" id="recommendations" href="/recommendations" style="font-size: 16px; color: #fff;">המלצות</a>
             <a class="nav-item nav-link" id="guided_tours" href="/guided_tours" style="font-size: 16px; color: #fff;">סיורים מודרכים</a>
             <a class="nav-item nav-link" id="maps" href="/maps" style="font-size: 16px; color: #fff;">מפה</a>
@@ -197,7 +208,7 @@
           <a class="nav-link" href="/recommendations">המלצות</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/forum">דיונים</a>
+          <a class="nav-link" href="/forum">פורום</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/about">אודות</a>
@@ -246,9 +257,23 @@
       {% block content %}{% endblock %}
     </div>
 
-    <footer>
-      <p>אתם מוזמנים להצטרף לקבוצת הפייסבוק "בשבילי חיפה" כדי להישאר מועדכנים</p>
-      <a href="https://www.facebook.com/groups/2787205004828441" target="_blank">קישור לקבוצה בפייסבוק</a>
+      <footer>
+        <div class="social-links mt-3" style="text-align: center; display: inline-block;">
+          <h2>בשבילי חיפה – מחכים לכם גם ברשתות החברתיות</h2>
+        </div>
+        <div class="social-links" style="text-align: center; ">
+            <a href="https://www.facebook.com/groups/2787205004828441" target="_blank" style="display: inline-block; margin: 0 5px;">
+                <i class="fa fa-facebook-square" style="font-size: 24px; color: #8aacf5; margin-left: 2px;"></i>
+            </a>
+    
+            <a href="https://open.spotify.com/episode/3Wl8QX29XqgUzXiwhyQzYM" target="_blank" style="display: inline-block; margin: 0 5px;">
+                <i class="fa fa-spotify" style="font-size: 24px; color: #1DB954; margin-left: 2px;"></i>
+            </a>
+    
+            <a href="https://youtu.be/GAnCOt03LJU" target="_blank" style="display: inline-block; margin: 0 5px;">
+                <i class="fa fa-youtube-play" style="font-size: 24px; color: #FF0000; margin-left: 2px;"></i>
+            </a>
+        </div>
     </footer>
 
     <!-- Script for news ticker -->
