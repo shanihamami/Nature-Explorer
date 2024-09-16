@@ -81,13 +81,6 @@ CREATE TABLE IF NOT EXISTS forum_comments (
     FOREIGN KEY (parent_comment_id) REFERENCES forum_comments(id)
 );
 
-    CREATE TABLE trail_images (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    trail_id INTEGER NOT NULL,
-    image_url TEXT NOT NULL,
-    FOREIGN KEY (trail_id) REFERENCES trails(id) ON DELETE CASCADE
-);
-
 
 
 

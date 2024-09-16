@@ -145,22 +145,6 @@ for news in news_data:
 connection.commit()
 connection.close()
 
-connection = sqlite3.connect('trails.db')
-cur = connection.cursor()
-
-
-
-cur.execute('''
-    CREATE TABLE trail_images (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    trail_id INTEGER NOT NULL,
-    image_url TEXT NOT NULL,
-    FOREIGN KEY (trail_id) REFERENCES trails(id) ON DELETE CASCADE
-);
-''')
-
-connection.commit()
-connection.close()
 
 
 connection = sqlite3.connect('registration.db')
