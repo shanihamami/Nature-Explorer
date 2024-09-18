@@ -6,29 +6,26 @@
 <main class="container">
     <h1 class="main-title">ברוכים הבאים</h1>
 
-    <!-- Flexbox container for weather and text side by side -->
+    <!-- Flexbox container with text above the weather -->
     <div class="flex-container">
-        <div id="weather-container" class="weather-container">
-            <div class="weather-header">
-            </div>
-            <div class="weather-temp">
-            </div>
-            <div class="weather-icon">
-            </div>
-            <div class="wind-details">
-                <div>בטעינה</div>
-            </div>
-            <div class="humidity">
-            </div>
-            <div class="update-time">
-                עודכן: 16:40
-            </div>
-        </div>
-
-        <!-- Introductory text on the right without border -->
+        <!-- Introductory text on top -->
         <div class="intro-container-text">
             <p class="rtl-text">בשבילי חיפה הוא מיזם חברתי שמטרתו לעודד אנשים לצאת לטבע החיפאי, לחקור אותו לטייל בשבילים ובוואדיות של חיפה."</p>
             <p class="rtl-text">באתר זה תוכלו לחפש מסלולים בטבע החיפאי שמעניינים אתכם, להירשם לסיורים מודרכים שמאורגנים על ידי "בשבילי חיפה" לקרוא המלצות ועדכונים ולנהל דיונים בנושא.</p>
+        </div>
+
+        <!-- Weather container below the text -->
+        <div id="weather-container" class="weather-container">
+            <div class="weather-header"></div>
+            <div class="weather-temp"></div>
+            <div class="weather-icon"></div>
+            <div class="wind-details">
+                <div>בטעינה</div>
+            </div>
+            <div class="humidity"></div>
+            <div class="update-time">
+                עודכן: 16:40
+            </div>
         </div>
     </div>
 
@@ -176,11 +173,11 @@
         margin-top: 20px;
     }
 
-    /* Flex container for weather and text side by side */
+    /* Flex container for stacking text and weather */
     .flex-container {
         display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
+        flex-direction: column;
+        align-items: center;
         padding: 20px;
         background-color: #ffffff;
         box-sizing: border-box;
@@ -190,13 +187,14 @@
         width: 100%;
     }
 
-    /* Introductory text on the right without border */
+    /* Introductory text on top */
     .intro-container-text {
-        flex: 2;
-        padding-right: 20px;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px;
     }
 
-    /* Weather container on the left with rounded borders */
+    /* Weather container below the text */
     .weather-container {
         display: flex;
         flex-direction: column;
@@ -300,8 +298,22 @@
         text-decoration: underline;
     }
 
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        /* Ensure proper layout on smaller screens */
+        .flex-container {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .intro-container-text {
+            padding: 0 20px;
+        }
+
+        .banner-container {
+            height: 300px;
+        }
+    }
 </style>
-
-
 
 {% endblock %}
