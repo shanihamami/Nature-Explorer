@@ -2,6 +2,108 @@
 {% block title %}עמוד הבית{% endblock %}
 
 {% block content %}
+
+<main class="container">
+    <h1 class="main-title">ברוכים הבאים</h1>
+
+    <!-- Flexbox container for weather and text side by side -->
+    <div class="flex-container">
+        <div id="weather-container" class="weather-container">
+            <div class="weather-header">
+            </div>
+            <div class="weather-temp">
+            </div>
+            <div class="weather-icon">
+            </div>
+            <div class="wind-details">
+                <div>בטעינה</div>
+            </div>
+            <div class="humidity">
+            </div>
+            <div class="update-time">
+                עודכן: 16:40
+            </div>
+        </div>
+
+        <!-- Introductory text on the right without border -->
+        <div class="intro-container-text">
+            <p class="rtl-text">בשבילי חיפה הוא מיזם חברתי שמטרתו לעודד אנשים לצאת לטבע החיפאי, לחקור אותו לטייל בשבילים ובוואדיות של חיפה."</p>
+            <p class="rtl-text">באתר זה תוכלו לחפש מסלולים בטבע החיפאי שמעניינים אתכם, להירשם לסיורים מודרכים שמאורגנים על ידי "בשבילי חיפה" לקרוא המלצות ועדכונים ולנהל דיונים בנושא.</p>
+        </div>
+    </div>
+
+    <!-- Banner Section -->
+    <section class="banner-container">
+        <img src="{{ url_for('static', filename='images/banner1.jpg') }}" alt="Banner" class="banner-image">
+    </section>
+</main>
+
+
+<script>
+    const apiKey = '9142ce21742a02f12fd544a3a3e34cdd'; // OpenWeatherMap API key
+    const city = 'Haifa';
+
+    function getWindDirection(deg) {
+        if (deg >= 0 && deg <= 22.5) return 'צפון';
+        else if (deg > 22.5 && deg <= 67.5) return 'צפון מזרח';
+        else if (deg > 67.5 && deg <= 112.5) return 'מזרח';
+        else if (deg > 112.5 && deg <= 157.5) return 'דרום מזרח';
+        else if (deg > 157.5 && deg <= 202.5) return 'דרום';
+        else if (deg > 202.5 && deg <= 247.5) return 'דרום מערב';
+        else if (deg > 247.5 && deg <= 292.5) return 'מערב';
+        else if (deg > 292.5 && deg <= 337.5) return 'צפון מערב';
+        else return 'צפון';
+    }
+
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=he`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data && data.weather && data.weather.length > 0) {
+                const weatherTemp = data.main.temp;
+                const humidity = data.main.humidity;
+                const windSpeed = data.wind.speed;
+                const weatherIcon = data.weather[0].icon;
+                const windDirection = getWindDirection(data.wind.deg);
+                const weatherDescription = data.weather[0].description;
+
+                const weatherHTML = `
+                    <div class="weather-header">
+                        חיפה
+                    </div>
+                    <div class="weather-temp">${weatherTemp}°C</div>
+                    <div class="weather-icon">
+                        <img src="http://openweathermap.org/img/wn/${weatherIcon}.png" alt="${weatherDescription}">
+                    </div>
+                    <div class="wind-details">
+                        <div>רוח: ${windSpeed} קמ"ש</div>
+                    </div>
+                    <div class="wind-details">
+                        <div> כיוון רוח: ${windDirection}</div>
+                    </div>
+                    <div class="humidity">
+                        לחות: ${humidity}%
+                    </div>
+                    <div class="update-time">
+                        עודכן: ${new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                `;
+                document.getElementById('weather-container').innerHTML = weatherHTML;
+            } else {
+                document.getElementById('weather-container').innerHTML = 'לא ניתן להשיג את נתוני מזג האוויר כרגע';
+            }
+        })
+        .catch(error => {
+            document.getElementById('weather-container').innerHTML = 'שגיאה בהבאת נתוני מזג האוויר';
+            console.error('Error fetching weather data:', error);
+        });
+</script>
+
+
 <style>
     body {
         font-family: 'Arial', sans-serif;
@@ -20,6 +122,7 @@
 
     .banner-container {
         margin-top: 20px;
+        margin-bottom: 20px;
         position: relative;
         width: 100%;
         height: 450px;
@@ -69,7 +172,8 @@
         font-weight: bold;
         color: #2c3e50;
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
+        margin-top: 20px;
     }
 
     /* Flex container for weather and text side by side */
@@ -198,103 +302,6 @@
 
 </style>
 
-<main class="container">
-    <h1 class="main-title">ברוכים הבאים</h1>
-
-    <!-- Flexbox container for weather and text side by side -->
-    <div class="flex-container">
-        <div id="weather-container" class="weather-container">
-            <div class="weather-header">
-            </div>
-            <div class="weather-temp">
-            </div>
-            <div class="weather-icon">
-            </div>
-            <div class="wind-details">
-                <div>בטעינה</div>
-            </div>
-            <div class="humidity">
-            </div>
-            <div class="update-time">
-                עודכן: 16:40
-            </div>
-        </div>
-
-        <!-- Introductory text on the right without border -->
-        <div class="intro-container-text">
-            <p class="rtl-text">בשבילי חיפה הוא מיזם חברתי שמטרתו לעודד אנשים לצאת לטבע החיפאי, לחקור אותו לטייל בשבילים ובוואדיות של חיפה."</p>
-            <p class="rtl-text">באתר זה תוכלו לחפש מסלולים בטבע החיפאי שמעניינים אתכם, להירשם לסיורים מודרכים שמאורגנים על ידי "בשבילי חיפה" לקרוא המלצות ועדכונים ולנהל דיונים בנושא.</p>
-        </div>
-    </div>
-
-    <!-- Banner Section -->
-    <section class="banner-container">
-        <img src="{{ url_for('static', filename='images/banner1.jpg') }}" alt="Banner" class="banner-image">
-    </section>
-</main>
 
 
-<script>
-    const apiKey = '9142ce21742a02f12fd544a3a3e34cdd'; // OpenWeatherMap API key
-    const city = 'Haifa';
-
-    function getWindDirection(deg) {
-        if (deg >= 0 && deg <= 22.5) return 'צפון';
-        else if (deg > 22.5 && deg <= 67.5) return 'צפון מזרח';
-        else if (deg > 67.5 && deg <= 112.5) return 'מזרח';
-        else if (deg > 112.5 && deg <= 157.5) return 'דרום מזרח';
-        else if (deg > 157.5 && deg <= 202.5) return 'דרום';
-        else if (deg > 202.5 && deg <= 247.5) return 'דרום מערב';
-        else if (deg > 247.5 && deg <= 292.5) return 'מערב';
-        else if (deg > 292.5 && deg <= 337.5) return 'צפון מערב';
-        else return 'צפון';
-    }
-
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=he`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data && data.weather && data.weather.length > 0) {
-                const weatherTemp = data.main.temp;
-                const humidity = data.main.humidity;
-                const windSpeed = data.wind.speed;
-                const weatherIcon = data.weather[0].icon;
-                const windDirection = getWindDirection(data.wind.deg);
-                const weatherDescription = data.weather[0].description;
-
-                const weatherHTML = `
-                    <div class="weather-header">
-                        חיפה
-                    </div>
-                    <div class="weather-temp">${weatherTemp}°C</div>
-                    <div class="weather-icon">
-                        <img src="http://openweathermap.org/img/wn/${weatherIcon}.png" alt="${weatherDescription}">
-                    </div>
-                    <div class="wind-details">
-                        <div>רוח: ${windSpeed} קמ"ש</div>
-                    </div>
-                    <div class="wind-details">
-                        <div> כיוון רוח: ${windDirection}</div>
-                    </div>
-                    <div class="humidity">
-                        לחות: ${humidity}%
-                    </div>
-                    <div class="update-time">
-                        עודכן: ${new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}
-                    </div>
-                `;
-                document.getElementById('weather-container').innerHTML = weatherHTML;
-            } else {
-                document.getElementById('weather-container').innerHTML = 'לא ניתן להשיג את נתוני מזג האוויר כרגע';
-            }
-        })
-        .catch(error => {
-            document.getElementById('weather-container').innerHTML = 'שגיאה בהבאת נתוני מזג האוויר';
-            console.error('Error fetching weather data:', error);
-        });
-</script>
 {% endblock %}

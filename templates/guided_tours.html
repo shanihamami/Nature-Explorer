@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1 class="text-right">סיורים מודרכים קרובים</h1>
+  <h1 class="text-right" style="margin: 15px;">סיורים מודרכים קרובים</h1>
 
   {% if tours %}
     <table class="table table-bordered">
@@ -98,6 +98,7 @@
     .pagination-link {
         direction: rtl; /* Align text direction right-to-left */
         margin: 0 5px;
+        margin-bottom: 15px;
         padding: 5px 10px;
         text-decoration: none;
         color: #000;

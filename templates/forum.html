@@ -3,10 +3,10 @@
 {% block title %}פורום{% endblock %}
 
 {% block content %}
-<div style="direction: rtl; text-align: right;">
+<div style="direction: rtl; text-align: right; margin-top: 20px;">
     <h1>פורום</h1>
 
-    <a href="{{ url_for('new_topic') }}" class="btn btn-primary">צור דיון חדש</a>
+    <a href="{{ url_for('new_topic') }}" style="margin-top: 10px; margin-bottom: 10px;" class="btn btn-primary">צור דיון חדש</a>
 
     <div class="topics-list">
         {% for topic in topics %}

@@ -72,7 +72,12 @@
                         <strong>אורך (ק"מ):</strong> ${trail.lengthKM}<br>
                         <strong>רמת קושי:</strong> ${trail.difficulty}<br>
                         <strong>עונה מתאימה:</strong> ${trail.season}<br>
+                        <strong>משך זמן:</strong> ${trail.duration}<br>
                         <strong>אטרקציות:</strong> ${trail.interactive_activity}<br>
+                        <strong>מתאים למשפחות:</strong> ${trail.suitable_for_families === 1 ? 'כן' : 'לא'}<br>
+                        <strong>כניסה למים:</strong> ${trail.possibility_of_entering_water === 1 ? 'כן' : 'לא'}<br>
+                        <strong>מתאים לאופניים:</strong> ${trail.suitable_for_bicycles === 1 ? 'כן' : 'לא'}<br>
+                        <strong>נגיש:</strong> ${trail.suitable_for_disabled === 1 ? 'כן' : 'לא'}<br>
                         <strong>סיורים עתידיים:</strong><br>
                         ${futureToursHTML}
                         </div>
@@ -97,5 +102,6 @@
 </html>
 
 {% endblock %}
+
 
 

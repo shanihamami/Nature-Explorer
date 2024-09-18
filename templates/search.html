@@ -4,7 +4,7 @@
 
 {% block content %}
 <main>
-    <section id="search-form" class="rtl-text">
+    <section id="search-form" style="margin-top: 20px;  margin-bottom: 10px;" class="rtl-text">
         <h1>חיפוש מסלולים</h1>
         <form method="POST" action="/search" class="search-form">
             <!-- אזור טיול -->
@@ -43,12 +43,12 @@
                 </div>
             </div>
 
-            <!-- אורך מסלול -->
+            <!-- משך זמן מסלול -->
             <div class="form-group">
-                <label for="durations">אורך מסלול:</label>
+                <label for="durations" style="font-weight: bold;">משך זמן:</label><br>
                 <div class="dropdown">
                     <button type="button" class="btn btn-secondary dropdown-toggle" onclick="toggleDropdown('durations-dropdown', event)">
-                        בחר אורך
+                        בחר משך זמן
                     </button>
                     <div id="durations-dropdown" class="dropdown-menu">
                         <div class="dropdown-item">

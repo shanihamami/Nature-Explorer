@@ -324,7 +324,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
-    return redirect(url_for('login'))
+    return redirect(url_for('home'))
 
 @app.route('/view-registrations')
 def view_registrations():
@@ -388,6 +388,7 @@ def edit_trail(trail_id):
     if not session.get('logged_in'):
         return redirect(url_for('login'))
     db = get_db_trails()
+    page = request.args.get('page', 1, type=int)
     if request.method == 'POST':
         main_location = request.form['main_location']
         trail_name = request.form['trail_name']
@@ -417,24 +418,26 @@ def edit_trail(trail_id):
             db.execute(query, params)
             db.commit()
             flash('פרטי השביל עודכנו בהצלחה!')
-            return redirect(url_for('manage_trails'))
+            print(page)
+            return redirect(url_for('manage_trails', page=page))
         except sqlite3.Error as e:
             print("SQLite error:", e)
             return f"An error occurred while updating data: {e}"
 
     trail = db.execute('SELECT * FROM trails WHERE id = ?', (trail_id,)).fetchone()
-    return render_template('edit_trail.html', trail=trail)
+    return render_template('edit_trail.html', trail=trail, page=page)
 
 @app.route('/delete_trail/<int:trail_id>', methods=['POST'])
 def delete_trail(trail_id):
     if not session.get('logged_in'):
         return redirect(url_for('login'))
     db = get_db_trails()
+    page = request.form.get('page', 1, type=int)
     try:
         db.execute('DELETE FROM trails WHERE id = ?', (trail_id,))
         db.commit()
         flash('השביל נמחק בהצלחה!')
-        return redirect(url_for('manage_trails'))
+        return redirect(url_for('manage_trails', page=page))
     except sqlite3.Error as e:
         print("SQLite error:", e)
         return f"An error occurred while deleting data: {e}"
@@ -899,8 +902,6 @@ def delete_item(item_type, item_id, topic_id):
         db.execute('DELETE FROM forum_comments WHERE id = ?', (item_id,))
         db.commit()
         return redirect(url_for('topic', topic_id=topic_id))
-
-
 
 
 

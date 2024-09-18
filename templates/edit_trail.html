@@ -90,6 +90,7 @@
                 <label for="suitable_for_disabled">מתאים לנכים:</label>
                 <input type="checkbox" id="suitable_for_disabled" name="suitable_for_disabled" {% if trail.suitable_for_disabled %}checked{% endif %}>
             </div>
+            <input type="hidden" name="page" value="{{ page }}">
             <button type="submit">עדכן מסלול</button>
         </form>
     </section>
@@ -149,3 +150,4 @@
     }
 </style>
 {% endblock %}
+
