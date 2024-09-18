@@ -30,37 +30,38 @@
 
       /* Navbar colors */
       .navbar {
-        min-height: 50px; /* גובה מינימלי */
-        overflow: visible; /* למנוע חיתוך התוכן */
-        background-color: #1e6091; /* Change to your desired green color */
+        min-height: 50px;
+        overflow: visible;
+        background-color: #1e6091;
+        padding-bottom: 10px; /* Padding to give space between menu and content */
       }
 
       .navbar-nav .nav-item .nav-link {
-        color: #fff; /* White text color */
+        color: #fff;
       }
 
       .navbar-nav .nav-item .nav-link:hover {
-        background-color: #1e6091; /* Darker color on hover */
+        background-color: #1e6091;
       }
 
       /* Footer styles */
       footer {
-        background-color: #1e6091; /* Footer background color */
-        color: #fff; /* Text color */
-        padding: 10px 0; /* Padding top and bottom */
-        text-align: center; /* Center align text */
+        background-color: #1e6091;
+        color: #fff;
+        padding: 10px 0;
+        text-align: center;
         position: relative;
         width: 100%;
-        margin-top: auto; /* Ensure it pushes to the bottom */
+        margin-top: 20px; /* Margin to add space between footer and content */
       }
 
       footer a {
-        color: #fff; /* Link color */
-        text-decoration: none; /* Remove underline */
+        color: #fff;
+        text-decoration: none;
       }
 
       footer a:hover {
-        text-decoration: underline; /* Underline on hover */
+        text-decoration: underline;
       }
 
       /* Ensure the body takes up the full height of the viewport */
@@ -78,19 +79,19 @@
 
       /* Adjust form width */
       .search-form {
-        max-width: 400px; /* Adjust as needed */
-        margin: auto; /* Center the form horizontally */
+        max-width: 400px;
+        margin: auto;
       }
 
       /* Ensure checkbox labels are aligned properly */
       .form-check-label {
-        margin-right: 10px; /* Adjust spacing between checkbox and label */
+        margin-right: 10px;
       }
 
       /* News Ticker styles */
       .news-ticker {
-        min-height: 50px; /* גובה מינימלי */
-        overflow: visible; /* למנוע חיתוך התוכן */
+        min-height: 50px;
+        overflow: visible;
         background-color: #1e6091;
         color: white;
         padding: 10px;
@@ -101,23 +102,24 @@
       marquee {
         font-size: 20px;
       }
-            /* Floating Sidebar Menu */
+
+      /* Floating Sidebar Menu */
       .sidebar-menu {
         position: fixed;
         top: 0;
         right: 0;
         height: 100%;
-        width: 50%; /* Adjust width to cover half the page */
-        background-color: rgba(52, 58, 64, 0.95); /* Slight transparency */
+        width: 50%;
+        background-color: rgba(52, 58, 64, 0.95);
         padding: 2rem;
-        z-index: 1050; /* High z-index to appear above everything */
+        z-index: 1050;
         transition: transform 0.3s ease;
-        transform: translateX(100%); /* Initially hidden off-screen */
-        box-shadow: -2px 0 5px rgba(0,0,0,0.5); /* Add shadow for depth */
+        transform: translateX(100%);
+        box-shadow: -2px 0 5px rgba(0,0,0,0.5);
       }
 
       .sidebar-menu.active {
-        transform: translateX(0); /* Slide in when active */
+        transform: translateX(0);
       }
 
       .sidebar-menu .close-menu {
@@ -142,11 +144,21 @@
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1040; /* Below the sidebar menu */
+        z-index: 1040;
       }
 
       .menu-overlay.active {
-        display: block; /* Show overlay when active */
+        display: block;
+      }
+
+      /* Add margin to the headline and search form */
+      main {
+        padding: 20px 0; /* Space around the content */
+        margin-top: 20px; /* Space between the headline and the navbar */
+      }
+
+      .container {
+        padding-bottom: 20px; /* Padding at the bottom to avoid content being too close to the footer */
       }
     </style>
 </head>
@@ -164,7 +176,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbar">
-        <div class="navbar-nav ml-auto"> <!-- Adjusted for right alignment -->
+        <div class="navbar-nav ml-auto">
             <a class="nav-item nav-link" id="contact" href="/contact" style="font-size: 16px; color: #fff;">צור קשר</a>
             <a class="nav-item nav-link" id="about" href="/about" style="font-size: 16px; color: #fff;">אודות</a>
             <a class="nav-item nav-link" id="about" href="/forum" style="font-size: 16px; color: #fff;">דיונים</a>
@@ -177,7 +189,7 @@
       </div>
     </nav>
 
-        <!-- Sidebar Menu (for mobile) -->
+    <!-- Sidebar Menu (for mobile) -->
     <div class="sidebar-menu" id="sidebarMenu">
       <span class="close-menu" id="closeMenu">&times;</span>
       <ul class="navbar-nav">
@@ -205,14 +217,12 @@
         <li class="nav-item">
           <a class="nav-link" href="/contact">צור קשר</a>
         </li>
-
-
-
-
       </ul>
     </div>
-<!-- Overlay -->
+
+    <!-- Overlay -->
     <div class="menu-overlay" id="menuOverlay"></div>
+
     <!-- News Ticker -->
     <div class="news-ticker" style="direction: rtl; text-align: right;">
         <marquee behavior="scroll" direction="right" id="news-ticker">
@@ -242,6 +252,7 @@
       {% endif %}
     {% endwith %}
 
+    <!-- Content Area -->
     <div class="container flex-grow-1">
       {% block content %}{% endblock %}
     </div>
@@ -253,11 +264,10 @@
 
     <!-- Script for news ticker -->
     <script>
-        // שליחת בקשה ל-API לקבלת העדכונים
+        // Fetch updates for the news ticker
         fetch('/api/news')
-            .then(response => response.json())  // קבלת התשובה בפורמט JSON
+            .then(response => response.json())
             .then(data => {
-                // עדכון ה-news ticker עם התוצאות שהתקבלו
                 const ticker = document.getElementById('news-ticker');
                 ticker.innerHTML = data.map(news => `${news} &nbsp;&nbsp; | &nbsp;&nbsp;`).join('');
             })
@@ -267,7 +277,7 @@
             });
     </script>
 
-        <!-- Sidebar Menu Script -->
+    <!-- Sidebar Menu Script -->
     <script>
       const menuToggler = document.getElementById('menu-toggler');
       const sidebarMenu = document.getElementById('sidebarMenu');

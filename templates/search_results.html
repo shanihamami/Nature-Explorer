@@ -7,43 +7,46 @@
     <h1>תוצאות חיפוש</h1>
 
     {% if results %}
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>שם</th>
-                <th>מיקום ראשי</th>
-                <th>תיאור קצר</th>
-                <th>אורך (ק"מ)</th>
-                <th>רמת קושי</th>
-                <th>עונה</th>
-                <th>אטרקציות</th>
-                <th>סיורים עתידיים</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for result in results %}
-            <tr>
-                <td>{{ result.trail_name }}</td>
-                <td>{{ result.main_location }}</td>
-                <td>{{ result.short_description }}</td>
-                <td>{{ result.lengthKM }}</td>
-                <td>{{ result.difficulty }}</td>
-                <td>{{ result.season }}</td>
-                <td>{{ result.interactive_activity }}</td>
-                <td>
-                    {% set future_tours_for_trail = future_tours.get(result.trail_name, []) %}
-                    {% if future_tours_for_trail %}
-                        {% for tour in future_tours_for_trail %}
-                            <a href="{{ url_for('register', tour_title=tour.title) }}">{{ tour.date }}</a><br>
-                        {% endfor %}
-                    {% else %}
-                      אין סיורים עתידיים
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>שם</th>
+                    <th>מיקום ראשי</th>
+                    <th class="short-description-header">תיאור קצר</th>
+                    <th>אורך (ק"מ)</th>
+                    <th>רמת קושי</th>
+                    <th>עונה</th>
+                    <th>אטרקציות</th>
+                    <th>סיורים עתידיים</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td>{{ result.trail_name }}</td>
+                    <td>{{ result.main_location }}</td>
+                    <td class="short-description">{{ result.short_description }}</td>
+                    <td>{{ result.lengthKM }}</td>
+                    <td>{{ result.difficulty }}</td>
+                    <td>{{ result.season }}</td>
+                    <td>{{ result.interactive_activity }}</td>
+                    <td>
+                        {% set future_tours_for_trail = future_tours.get(result.trail_name, []) %}
+                        {% if future_tours_for_trail %}
+                            {% for tour in future_tours_for_trail %}
+                                <a href="{{ url_for('register', tour_title=tour.title) }}">{{ tour.date }}</a><br>
+                            {% endfor %}
+                        {% else %}
+                          אין סיורים עתידיים
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
     <div class="pagination-container">
         <div class="pagination">
             {% if has_prev %}
@@ -67,22 +70,9 @@
         text-align: right;
     }
 
-    #manage-trails {
-        padding: 20px;
-    }
-
-    .add-trail-btn {
-        display: inline-block;
-        margin-bottom: 15px;
-        padding: 10px 15px;
-        background-color: #34A0A4;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-    }
-
-    .add-trail-btn:hover {
-        background-color: #168AAD;
+    .table-responsive {
+        overflow-x: auto; /* Enables horizontal scrolling */
+        width: 100%;
     }
 
     table {
@@ -97,23 +87,49 @@
     th, td {
         padding: 10px;
         text-align: center;
+        vertical-align: middle; /* Ensures better alignment */
     }
 
     th {
         background-color: #f4f4f4;
     }
 
+    /* Control the width of the "תיאור קצר" column */
+    .short-description-header, .short-description {
+        width: 350px; /* Increase width to make the column wider */
+        word-wrap: break-word;
+        white-space: normal;
+    }
+
+    /* Add media query for mobile */
+    @media (max-width: 768px) {
+        /* Adjust the short description column for smaller screens */
+        .short-description-header, .short-description {
+            width: 250px; /* Wider on mobile, but not too wide */
+        }
+
+        /* Ensure horizontal scrolling behavior for mobile */
+        .table-responsive {
+            overflow-x: scroll;
+        }
+
+        /* Shrink all columns slightly for better mobile fit */
+        th, td {
+            padding: 5px;
+        }
+    }
+
     .pagination-container {
-        text-align: right; /* Align pagination container to the right */
+        text-align: right;
         margin-top: 20px;
     }
 
     .pagination {
-        display: inline-block; /* Ensure the pagination links are inline-block */
+        display: inline-block;
     }
 
     .pagination-link {
-        direction: rtl; /* Align text direction right-to-left */
+        direction: rtl;
         margin: 0 5px;
         padding: 5px 10px;
         text-decoration: none;
@@ -126,4 +142,4 @@
         background-color: #ddd;
     }
 </style>
-{% endblock %}
+{% endblock %}

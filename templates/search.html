@@ -7,138 +7,174 @@
     <section id="search-form" class="rtl-text">
         <h1>חיפוש מסלולים</h1>
         <form method="POST" action="/search" class="search-form">
-
             <!-- אזור טיול -->
             <div class="form-group">
-                <label for="areas" style="font-weight: bold;">אזור טיול:</label><br>
+                <label for="areas">אזור טיול:</label>
                 <div class="dropdown">
                     <button type="button" class="btn btn-secondary dropdown-toggle" onclick="toggleDropdown('areas-dropdown', event)">
                         בחר אזורים
                     </button>
                     <div id="areas-dropdown" class="dropdown-menu">
-                        <label class="dropdown-item">
+                        <div class="dropdown-item">
                             <input type="checkbox" id="select-all-areas" onclick="toggleAllCheckboxes('areas-dropdown', this)">
-                            <strong>הכל</strong>
-                        </label>
-                        <label class="dropdown-item">
-                            <input type="checkbox" name="areas[]" value="שבילי יער רמת אלון" onclick="updateSelectAllCheckbox('areas-dropdown')"> שבילי יער רמת אלון
-                        </label>
-                        <label class="dropdown-item">
-                            <input type="checkbox" name="areas[]" value="ואדי לטם" onclick="updateSelectAllCheckbox('areas-dropdown')"> ואדי לטם
-                        </label>
-                        <label class="dropdown-item">
-                            <input type="checkbox" name="areas[]" value="גבעת העיזים" onclick="updateSelectAllCheckbox('areas-dropdown')"> גבעת העיזים
-                        </label>
-                        <label class="dropdown-item">
-                            <input type="checkbox" name="areas[]" value="ואדי עובדיה" onclick="updateSelectAllCheckbox('areas-dropdown')"> ואדי עובדיה
-                        </label>
-                        <label class="dropdown-item">
-                            <input type="checkbox" name="areas[]" value="נחל סעדיה" onclick="updateSelectAllCheckbox('areas-dropdown')"> נחל סעדיה
-                        </label>
+                            <label><strong>הכל</strong></label>
+                        </div>
+                        <div class="dropdown-item">
+                            <input type="checkbox" name="areas[]" value="שבילי יער רמת אלון" onclick="updateSelectAllCheckbox('areas-dropdown')">
+                            <label>שבילי יער רמת אלון</label>
+                        </div>
+                        <div class="dropdown-item">
+                            <input type="checkbox" name="areas[]" value="ואדי לטם" onclick="updateSelectAllCheckbox('areas-dropdown')">
+                            <label>ואדי לטם</label>
+                        </div>
+                        <div class="dropdown-item">
+                            <input type="checkbox" name="areas[]" value="גבעת העיזים" onclick="updateSelectAllCheckbox('areas-dropdown')">
+                            <label>גבעת העיזים</label>
+                        </div>
+                        <div class="dropdown-item">
+                            <input type="checkbox" name="areas[]" value="ואדי עובדיה" onclick="updateSelectAllCheckbox('areas-dropdown')">
+                            <label>ואדי עובדיה</label>
+                        </div>
+                        <div class="dropdown-item">
+                            <input type="checkbox" name="areas[]" value="נחל סעדיה" onclick="updateSelectAllCheckbox('areas-dropdown')">
+                            <label>נחל סעדיה</label>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- אורך מסלול -->
             <div class="form-group">
-                <label for="durations" style="font-weight: bold;">אורך מסלול:</label><br>
+                <label for="durations">אורך מסלול:</label>
                 <div class="dropdown">
                     <button type="button" class="btn btn-secondary dropdown-toggle" onclick="toggleDropdown('durations-dropdown', event)">
                         בחר אורך
                     </button>
                     <div id="durations-dropdown" class="dropdown-menu">
-                        <label class="dropdown-item">
+                        <div class="dropdown-item">
                             <input type="checkbox" id="select-all-durations" onclick="toggleAllCheckboxes('durations-dropdown', this)">
-                            <strong>הכל</strong>
-                        </label>
-                        <label class="dropdown-item">
-                            <input type="checkbox" name="durations[]" value="חצי שעה-שעה" onclick="updateSelectAllCheckbox('durations-dropdown')"> חצי שעה-שעה
-                        </label>
-                        <label class="dropdown-item">
-                            <input type="checkbox" name="durations[]" value="שעה-שעתיים" onclick="updateSelectAllCheckbox('durations-dropdown')"> שעה-שעתיים
-                        </label>
-                        <label class="dropdown-item">
-                            <input type="checkbox" name="durations[]" value="שעתיים+" onclick="updateSelectAllCheckbox('durations-dropdown')"> שעתיים+
-                        </label>
+                            <label><strong>הכל</strong></label>
+                        </div>
+                        <div class="dropdown-item">
+                            <input type="checkbox" name="durations[]" value="חצי שעה-שעה" onclick="updateSelectAllCheckbox('durations-dropdown')">
+                            <label>חצי שעה-שעה</label>
+                        </div>
+                        <div class="dropdown-item">
+                            <input type="checkbox" name="durations[]" value="שעה-שעתיים" onclick="updateSelectAllCheckbox('durations-dropdown')">
+                            <label>שעה-שעתיים</label>
+                        </div>
+                        <div class="dropdown-item">
+                            <input type="checkbox" name="durations[]" value="שעתיים+" onclick="updateSelectAllCheckbox('durations-dropdown')">
+                            <label>שעתיים+</label>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- עונה מתאימה -->
             <div class="form-group">
-                <label for="seasons" style="font-weight: bold;">עונה מתאימה:</label><br>
+                <label for="seasons">עונה מתאימה:</label>
                 <div class="dropdown">
                     <button type="button" class="btn btn-secondary dropdown-toggle" onclick="toggleDropdown('seasons-dropdown', event)">
                         בחר עונות
                     </button>
                     <div id="seasons-dropdown" class="dropdown-menu">
-                        <label class="dropdown-item">
+                        <div class="dropdown-item">
                             <input type="checkbox" id="select-all-seasons" onclick="toggleAllCheckboxes('seasons-dropdown', this)">
-                            <strong>הכל</strong>
-                        </label>
-                        <label class="dropdown-item">
-                            <input type="checkbox" name="seasons[]" value="קיץ" onclick="updateSelectAllCheckbox('seasons-dropdown')"> קיץ
-                        </label>
-                        <label class="dropdown-item">
-                            <input type="checkbox" name="seasons[]" value="חורף" onclick="updateSelectAllCheckbox('seasons-dropdown')"> חורף
-                        </label>
-                        <label class="dropdown-item">
-                            <input type="checkbox" name="seasons[]" value="סתיו" onclick="updateSelectAllCheckbox('seasons-dropdown')"> סתיו
-                        </label>
-                        <label class="dropdown-item">
-                            <input type="checkbox" name="seasons[]" value="אביב" onclick="updateSelectAllCheckbox('seasons-dropdown')"> אביב
-                        </label>
+                            <label><strong>הכל</strong></label>
+                        </div>
+                        <div class="dropdown-item">
+                            <input type="checkbox" name="seasons[]" value="קיץ" onclick="updateSelectAllCheckbox('seasons-dropdown')">
+                            <label>קיץ</label>
+                        </div>
+                        <div class="dropdown-item">
+                            <input type="checkbox" name="seasons[]" value="חורף" onclick="updateSelectAllCheckbox('seasons-dropdown')">
+                            <label>חורף</label>
+                        </div>
+                        <div class="dropdown-item">
+                            <input type="checkbox" name="seasons[]" value="סתיו" onclick="updateSelectAllCheckbox('seasons-dropdown')">
+                            <label>סתיו</label>
+                        </div>
+                        <div class="dropdown-item">
+                            <input type="checkbox" name="seasons[]" value="אביב" onclick="updateSelectAllCheckbox('seasons-dropdown')">
+                            <label>אביב</label>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- רמת קושי -->
             <div class="form-group">
-                <label for="difficulty" style="font-weight: bold;">רמת קושי:</label><br>
+                <label for="difficulty">רמת קושי:</label>
                 <div class="dropdown">
                     <button type="button" class="btn btn-secondary dropdown-toggle" onclick="toggleDropdown('difficulty-dropdown', event)">
                         בחר רמות קושי
                     </button>
                     <div id="difficulty-dropdown" class="dropdown-menu">
-                        <label class="dropdown-item">
+                        <div class="dropdown-item">
                             <input type="checkbox" id="select-all-difficulty" onclick="toggleAllCheckboxes('difficulty-dropdown', this)">
-                            <strong>הכל</strong>
-                        </label>
-                        <label class="dropdown-item">
-                            <input type="checkbox" name="difficulty[]" value="קל" onclick="updateSelectAllCheckbox('difficulty-dropdown')"> קל
-                        </label>
-                        <label class="dropdown-item">
-                            <input type="checkbox" name="difficulty[]" value="בינוני" onclick="updateSelectAllCheckbox('difficulty-dropdown')"> בינוני
-                        </label>
-                        <label class="dropdown-item">
-                            <input type="checkbox" name="difficulty[]" value="קשה" onclick="updateSelectAllCheckbox('difficulty-dropdown')"> קשה
-                        </label>
+                            <label><strong>הכל</strong></label>
+                        </div>
+                        <div class="dropdown-item">
+                            <input type="checkbox" name="difficulty[]" value="קל" onclick="updateSelectAllCheckbox('difficulty-dropdown')">
+                            <label>קל</label>
+                        </div>
+                        <div class="dropdown-item">
+                            <input type="checkbox" name="difficulty[]" value="בינוני" onclick="updateSelectAllCheckbox('difficulty-dropdown')">
+                            <label>בינוני</label>
+                        </div>
+                        <div class="dropdown-item">
+                            <input type="checkbox" name="difficulty[]" value="קשה" onclick="updateSelectAllCheckbox('difficulty-dropdown')">
+                            <label>קשה</label>
+                        </div>
                     </div>
                 </div>
             </div>
+
             <!-- משתנים בינאריים -->
             <div class="form-group">
-                <label style="font-weight: bold;">משתנים בינאריים:</label><br>
-                <label>
-                    <input type="checkbox" name="family">מתאים למשפחות
-                </label><br>
-                <label>
-                    <input type="checkbox" name="water"> אפשרות כניסה למים
-                </label><br>
-                <label>
-                    <input type="checkbox" name="bicycles"> מתאים לאופניים
-                </label><br>
-                <label>
-                    <input type="checkbox" name="disabled">נגיש לבעלי מוגבלויות
-                </label><br>
+                <label>מאפיינים נוספים:</label>
+                <div class="checkbox-group">
+                    <div>
+                        <input type="checkbox" name="family">
+                        <label>מתאים למשפחות</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="water">
+                        <label>אפשרות כניסה למים</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="bicycles">
+                        <label>מתאים לאופניים</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="disabled">
+                        <label>נגיש לבעלי מוגבלויות</label>
+                    </div>
+                </div>
             </div>
+
             <button type="submit" class="btn btn-primary">חיפוש</button>
         </form>
     </section>
 </main>
 
 <style>
+    .form-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        flex: 1;
+        font-weight: bold;
+        text-align: right;
+        margin-right: 10px;
+    }
+
     .dropdown {
+        flex: 2;
         position: relative;
         display: inline-block;
     }
@@ -146,33 +182,40 @@
     .dropdown-menu {
         display: none;
         position: absolute;
-        top: 100%; /* Make sure it opens below the button */
+        top: 100%;
         left: 0;
         background-color: white;
-        box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
         padding: 10px;
         min-width: 200px;
-        direction: rtl; /* Align the text to the right */
-        z-index: 1000; /* Ensure it is above other content */
+        direction: rtl;
+        z-index: 1000;
     }
 
     .dropdown-item {
+        display: flex;
+        align-items: center;
         padding: 5px 10px;
         cursor: pointer;
-        text-align: right; /* Align text to the right */
+        text-align: right;
     }
 
     .dropdown-item input {
-        margin-left: 5px; /* Space between checkbox and text */
-        margin-right: 0;
+        margin-left: 5px;
     }
 
     .dropdown-toggle::after {
-        content: ""; /* Remove default dropdown arrow */
+        content: "";
     }
 
-    .dropdown-item strong {
-        font-weight: bold; /* Make "בחר הכל" bold */
+    .checkbox-group div {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+
+    .checkbox-group label {
+        margin-left: 5px;
     }
 </style>
 
@@ -181,11 +224,9 @@
         event.stopPropagation();
         const dropdown = document.getElementById(id);
         const isVisible = dropdown.style.display === 'block';
-        // Hide all dropdowns
         document.querySelectorAll('.dropdown-menu').forEach(menu => {
             menu.style.display = 'none';
         });
-        // Toggle the clicked dropdown
         dropdown.style.display = isVisible ? 'none' : 'block';
     }
 
@@ -204,7 +245,6 @@
         allCheckbox.checked = allChecked;
     }
 
-    // Close all dropdowns when clicking outside
     document.addEventListener('click', function(event) {
         if (!event.target.closest('.dropdown')) {
             document.querySelectorAll('.dropdown-menu').forEach(menu => {
@@ -213,7 +253,6 @@
         }
     });
 
-    // סימון כל הצ'ק בוקסים בכל הרשימות הנפתחות כברירת מחדל
     window.onload = function() {
         document.querySelectorAll('.dropdown-menu').forEach(menu => {
             const checkboxes = menu.querySelectorAll('input[type="checkbox"]');
@@ -223,9 +262,4 @@
         });
     };
 </script>
-
-
 {% endblock %}
-
-
-
